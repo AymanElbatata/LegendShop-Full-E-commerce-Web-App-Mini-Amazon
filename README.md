@@ -59,12 +59,13 @@ Fully customizable based on business needs
 
 
 🎯 Why Choose LegendShop?
+
 ⏱️ Save months of development
 🚀 Launch your store quickly
 🧱 Built with scalable architecture
 📈 Ready for real-world usage
-💡 Final Note
 
+💡 Final Note
 Build and launch your own Amazon-style e-commerce platform in days instead of months.
 
 📩 Contact
