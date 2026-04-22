@@ -45,11 +45,13 @@ Basic admin/supplier features included
 Designed for easy expansion
 Custom admin panel available upon request
 Fully customizable based on business needs
+
 💰 Monetization
 🛍️ Product sales
-💳 Payment gateway integration (Stripe / PayPal)
-📢 Ads and promotions
+💳 Payment gateway integration (Stripe / PayPal) Upon Request
+📢 Ads and promotions  Upon Request
 🏪 Future multi-vendor marketplace support
+
 📦 Included
 ✔️ Full source code
 ✔️ Ready-to-run project
