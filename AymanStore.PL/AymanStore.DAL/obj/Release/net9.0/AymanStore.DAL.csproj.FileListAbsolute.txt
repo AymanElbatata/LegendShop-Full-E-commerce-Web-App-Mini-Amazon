@@ -1,0 +1,14 @@
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\bin\Release\net9.0\AymanStore.DAL.deps.json
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\bin\Release\net9.0\AymanStore.DAL.runtimeconfig.json
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\bin\Release\net9.0\AymanStore.DAL.dll
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\bin\Release\net9.0\AymanStore.DAL.pdb
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\obj\Release\net9.0\AymanStore.DAL.csproj.AssemblyReference.cache
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\obj\Release\net9.0\AymanStore.DAL.GeneratedMSBuildEditorConfig.editorconfig
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\obj\Release\net9.0\AymanStore.DAL.AssemblyInfoInputs.cache
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\obj\Release\net9.0\AymanStore.DAL.AssemblyInfo.cs
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\obj\Release\net9.0\AymanStore.DAL.csproj.CoreCompileInputs.cache
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\obj\Release\net9.0\AymanStore.DAL.dll
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\obj\Release\net9.0\refint\AymanStore.DAL.dll
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\obj\Release\net9.0\AymanStore.DAL.pdb
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\obj\Release\net9.0\AymanStore.DAL.genruntimeconfig.cache
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.DAL\obj\Release\net9.0\ref\AymanStore.DAL.dll

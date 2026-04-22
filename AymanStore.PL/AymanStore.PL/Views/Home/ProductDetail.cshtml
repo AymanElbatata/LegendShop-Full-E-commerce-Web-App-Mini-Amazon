@@ -1,0 +1,808 @@
+﻿@using AymanStore.BLL.Interfaces
+@using Microsoft.AspNetCore.Identity
+@inject IUnitOfWork UnitOfWork;
+
+@model AymanStore.PL.Models.ProductDetails_VM
+
+
+@{
+    ViewData["Title"] = "Product Detail";
+}
+
+
+<style>
+    /* ---------- YOUR ORIGINAL STYLES (unchanged for desktop/tablet) ---------- */
+    /* Product Detail Section */
+    .product-detail {
+        display: flex;
+        background-color: white;
+        padding: 20px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    /* Image Gallery */
+    .image-gallery {
+        width: 40%;
+        padding-right: 20px;
+    }
+
+    .main-image {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 400px;
+        margin-bottom: 10px;
+        border: 1px solid #DDD;
+        padding: 10px;
+    }
+
+        .main-image img {
+            max-height: 100%;
+            max-width: 100%;
+            object-fit: contain;
+        }
+
+    .thumbnail-container {
+        display: flex;
+        gap: 10px;
+        overflow-x: auto;
+        padding: 10px 0;
+    }
+
+    .thumbnail {
+        width: 60px;
+        height: 60px;
+        border: 1px solid #DDD;
+        padding: 5px;
+        cursor: pointer;
+    }
+
+        .thumbnail.active {
+            border: 2px solid #E77600;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+    /* Product Info */
+    .product-info {
+        width: 30%;
+        padding: 0 20px;
+        border-right: 1px solid #DDD;
+    }
+
+    .product-title {
+        font-size: 24px;
+        font-weight: 400;
+        margin-bottom: 10px;
+    }
+
+    .product-rating {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .product-rating-stars {
+        color: #FFA41C;
+        margin-right: 5px;
+    }
+
+    .product-rating-count {
+        color: #007185;
+        margin-left: 5px;
+    }
+
+    /*NEW Start*/
+    .star-rating {
+        font-size: 1.3rem;
+        display: inline-flex;
+        gap: 2px;
+    }
+
+    .star.full {
+        color: #FFD700;
+    }
+
+    .star.half {
+        background: linear-gradient(90deg, #FFD700 50%, #ccc 50%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        color: #FFD700;
+    }
+
+    .star.empty {
+        color: #ccc;
+    }
+
+    .rating-value {
+        margin-left: 6px;
+        font-weight: bold;
+    }
+
+    .rating-count {
+        margin-left: 4px;
+        font-size: 0.9rem;
+        color: #555;
+    }
+    /*NEW End*/
+
+    .product-price {
+        margin-bottom: 10px;
+    }
+
+    .price-large {
+        font-size: 28px;
+        color: #B12704;
+    }
+
+    .shipping-info {
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .product-description {
+        font-size: 14px;
+        margin-bottom: 15px;
+    }
+
+    .product-highlights {
+        margin-bottom: 15px;
+    }
+
+        .product-highlights ul {
+            padding-left: 20px;
+            font-size: 14px;
+        }
+
+        .product-highlights li {
+            margin-bottom: 5px;
+        }
+
+    /* Purchase Options */
+    .purchase-options {
+        width: 30%;
+        padding-left: 20px;
+    }
+
+    .price-box {
+        padding: 15px;
+        border: 1px solid #DDD;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+    .price-label {
+        font-size: 12px;
+        color: #565959;
+    }
+
+    .price-amount {
+        font-size: 18px;
+        font-weight: bold;
+        color: #B12704;
+    }
+
+    .shipping-details {
+        font-size: 14px;
+        margin-bottom: 10px;
+        color: #565959;
+    }
+
+    .delivery-location {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+        .delivery-location select {
+            flex-grow: 1;
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #DDD;
+        }
+
+    .stock-status {
+        color: #007600;
+        font-size: 18px;
+        margin-bottom: 15px;
+    }
+
+    .quantity-selector {
+        margin-bottom: 15px;
+    }
+
+        .quantity-selector select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #DDD;
+            background-color: #F0F2F2;
+        }
+
+    .add-to-cart-btn, .buy-now-btn, .signInFirst {
+        width: 100%;
+        padding: 10px;
+        border-radius: 20px;
+        margin-bottom: 10px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+
+    .add-to-cart-btn, .signInFirst {
+        background-color: #FFD814;
+        border: 1px solid #FCD200;
+    }
+
+        .add-to-cart-btn:hover, .signInFirst:hover {
+            background-color: #F7CA00;
+        }
+
+    .buy-now-btn {
+        background-color: #FFA41C;
+        border: 1px solid #FF8F00;
+    }
+
+        .buy-now-btn:hover {
+            background-color: #FA8900;
+        }
+
+    .secure-transaction {
+        font-size: 12px;
+        color: #565959;
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+        .secure-transaction i {
+            margin-right: 5px;
+            color: #007185;
+        }
+
+    /* Product Details Section */
+    .product-details-section {
+        background-color: white;
+        padding: 20px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #DDD;
+    }
+
+    .product-specs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+    }
+
+    .spec-row {
+        display: flex;
+        margin-bottom: 10px;
+    }
+
+    .spec-name {
+        font-weight: bold;
+        min-width: 150px;
+        color: #565959;
+    }
+
+    /* Customer Reviews */
+    .customer-reviews {
+        background-color: white;
+        padding: 20px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .review-summary {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .review-rating {
+        font-size: 24px;
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .review-stars {
+        color: #FFA41C;
+        margin-right: 10px;
+    }
+
+    .review-filter {
+        margin-left: auto;
+    }
+
+        .review-filter select {
+            padding: 5px;
+            border-radius: 4px;
+            border: 1px solid #DDD;
+        }
+
+    .review-item {
+        border-bottom: 1px solid #DDD;
+        padding: 15px 0;
+    }
+
+    .review-title {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .review-meta {
+        font-size: 14px;
+        color: #565959;
+        margin-bottom: 10px;
+    }
+
+    .review-body {
+        margin-bottom: 10px;
+    }
+
+    .review-helpful {
+        font-size: 14px;
+        color: #565959;
+    }
+
+        .review-helpful button {
+            background: none;
+            border: none;
+            color: #007185;
+            cursor: pointer;
+            text-decoration: underline;
+        }
+
+    /* ---------- MOBILE-ONLY OVERRIDES (max-width: 767px) ---------- */
+    @@media (max-width: 767px) {
+        /* Product Detail: change to column stacking */
+        .product-detail
+
+    {
+        flex-direction: column;
+        padding: 16px;
+        gap: 20px;
+    }
+
+    /* Image Gallery: full width */
+    .image-gallery {
+        width: 100%;
+        padding-right: 0;
+    }
+
+    .main-image {
+        height: auto;
+        max-height: 350px;
+        min-height: 250px;
+    }
+
+    /* Product Info: full width, remove border */
+    .product-info {
+        width: 100%;
+        padding: 0;
+        border-right: none;
+    }
+
+    .product-title {
+        font-size: 22px;
+    }
+
+    /* Purchase Options: full width */
+    .purchase-options {
+        width: 100%;
+        padding-left: 0;
+    }
+
+    /* Specs grid: single column on mobile */
+    .product-specs {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .spec-row {
+        flex-direction: column;
+        margin-bottom: 8px;
+    }
+
+    .spec-name {
+        min-width: auto;
+        margin-bottom: 4px;
+    }
+
+    /* review summary wrap */
+    .review-summary {
+        flex-wrap: wrap;
+    }
+
+    /* adjust price font */
+    .price-large {
+        font-size: 24px;
+    }
+
+    /* make delivery location & quantity more touch friendly */
+    .delivery-location select,
+    .quantity-selector select {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .add-to-cart-btn, .buy-now-btn, .signInFirst {
+        padding: 12px;
+        font-size: 15px;
+    }
+
+    /* thumbnail container stays scrollable but better spacing */
+    .thumbnail-container {
+        gap: 8px;
+    }
+
+    .thumbnail {
+        width: 55px;
+        height: 55px;
+    }
+
+    }
+
+    /* small extra touch for very tiny devices */
+    @@media (max-width: 480px) {
+        .container
+
+    {
+        padding: 12px;
+    }
+
+    .product-detail {
+        padding: 12px;
+    }
+
+    .product-title {
+        font-size: 20px;
+    }
+
+    .price-large {
+        font-size: 22px;
+    }
+
+    .stock-status {
+        font-size: 16px;
+    }
+
+    }
+
+    /* global responsive helpers (images, containers) */
+    img, svg, video {
+        max-width: 100%;
+        height: auto;
+    }
+
+    .container {
+        max-width: 1280px;
+/*         margin: 0 auto;
+ */        padding: 0 15px;
+    }
+
+    /* preserve original breadcrumb */
+    .breadcrumb {
+        font-size: 13px;
+        color: #565959;
+        margin-bottom: 15px;
+    }
+
+    .text-decoration-none {
+        text-decoration: none;
+    }
+
+    .text-black {
+        color: #0F1111;
+    }
+
+    button, input, select, textarea {
+        font-family: inherit;
+    }
+</style>
+
+    <div class="container">
+        <div class="breadcrumb">
+            <span>Home > @Model.ProductTBL_VM.SubCategoryTBL.CategoryTBL.Name > @Model.ProductTBL_VM.SubCategoryTBL.Name </span>
+        </div>
+
+        @if (ViewBag.Message != null)
+        {
+            <span class="text-center ms-2 px-2" style="color:green">✅ @ViewBag.Message</span>
+        }
+
+        <!-- Product Detail Section -->
+        <div class="product-detail">
+            <!-- Image Gallery -->
+            <div class="image-gallery">
+                <div class="main-image">
+                    <img src="@Url.Content($"~/Images/Products/{Model.ProductTBL_VM.Image}")"
+                         alt="@Model.ProductTBL_VM.Name"
+                         id="main-image">
+                </div>
+                <div class="thumbnail-container">
+                    <div class="thumbnail active" data-image="@Url.Content($"~/Images/Products/{Model.ProductTBL_VM.Image}")">
+                        <img src="@Url.Content($"~/Images/Products/{Model.ProductTBL_VM.Image}")" alt="Thumbnail 1">
+                    </div>
+
+                    @foreach (var item in Model.ProductPhotoTBL_VM)
+                    {
+                        <div class="thumbnail" data-image="@Url.Content($"~/Images/Products/{item.Image}")">
+                            <img src="@Url.Content($"~/Images/Products/{item.Image}")" alt="Thumbnail">
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Product Info -->
+            <div class="product-info">
+                <h1 class="product-title">@Model.ProductTBL_VM.Name</h1>
+
+                <div class="product-rating">
+                    <!-- Average rating display -->
+                    <div class="product-rating-stars">
+                        @{
+                            double avgRating = Model.ProductRate;
+                            int totalRatings = Model.ProductRatingTBL_VM.Count;
+                            int fullStars = (int)Math.Floor(avgRating);
+                            bool halfStar = (avgRating - fullStars) >= 0.5;
+                        }
+                        @for (int i = 1; i <= fullStars; i++)
+                        {
+                            <i class="fas fa-star full-star"></i>
+                        }
+                        @if (halfStar)
+                        {
+                            <i class="fas fa-star-half-alt half-star"></i>
+                        }
+                        @for (int i = fullStars + (halfStar ? 1 : 0); i < 5; i++)
+                        {
+                            <i class="far fa-star empty-star"></i>
+                        }
+                        <span class="product-rating-count">@totalRatings ratings</span>
+                        <span class="rating-value">@avgRating.ToString("0.0") out of 5</span>
+                    </div>
+                </div>
+
+                <div class="product-price">
+                    <span class="price-large">$@Model.ProductTBL_VM.SellingPrice</span>
+                    @if (Model.ShippingCompanyCostTBL_VM.CountryTBLSendTo != null && Model.ShippingCompanyCostTBL_VM.Cost != 0)
+                    {
+                    <div class="shipping-info">$@Model.ShippingCompanyCostTBL_VM.Cost Shipping & Import Fees</div>
+                    }
+                    else
+                    {
+                        <div class="shipping-info">$0.00 Unknown!. Shipping & Import Fees</div>
+                    }
+                </div>
+                <div class="product-description">
+                    <p>@Model.ProductTBL_VM.Description</p>
+                </div>
+                <div class="product-highlights">
+                    <h3>About this item</h3>
+                    <ul>
+                        @foreach (var item in Model.ProductSpecificationTBL_VM)
+                        {
+                            <li>@item.Name</li>
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Purchase Options -->
+            <div class="purchase-options">
+                <div class="price-box">
+                    <div class="price-label">Price:</div>
+                    <div class="price-amount">$@Model.ProductTBL_VM.SellingPrice</div>
+                    @if (Model.ShippingCompanyCostTBL_VM != null && Model.ShippingCompanyCostTBL_VM.CountryTBLSendTo != null)
+                    {
+                        <div class="shipping-details">$@Model.ShippingCompanyCostTBL_VM.Cost Shipping & Import Fees Deposit to @Model.ShippingCompanyCostTBL_VM.CountryTBLSendTo.Name <a asp-controller="Home" asp-action="ShippingDetails" asp-route-countryId="@Model.ShippingCompanyCostTBL_VM.CountryTBLSendToId">Details</a></div>
+                    }
+                    else
+                    {
+                        <div class="shipping-details">
+                            $0.00 Unknown country, please try to refresh your page!
+                            <a asp-controller="User"
+                               asp-action="ContactForProductError"
+                               asp-route-productId="@Model.ProductTBL_VM.ID">
+                                Contact
+                            </a>
+                        </div>
+                    }
+                </div>
+                <div class="delivery-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <select id="DeliveryCountryId">
+                        @if (Model.CountryTBL_VM != null)
+                        {
+                            foreach (var item in Model.CountryTBL_VM)
+                            {
+                                <option value="@item.ID">Deliver to @item.Name</option>
+                            }
+                        }
+                    </select>
+                </div>
+                @if (Model.ProductTBL_VM.Quantity > 0)
+                {
+                    <div class="stock-status">In Stock</div>
+                    <div class="quantity-selector">
+                        <label for="productQuantity">Qty:</label>
+                        <select id="productQuantity">
+                            @for (int i = 0; i < Model.ProductTBL_VM.Quantity; i++)
+                            {
+                                <option>@(i + 1)</option>
+                            }
+                        </select>
+                    </div>
+                }
+                else
+                {
+                    <div class="stock-status">Out Of Stock</div>
+                    <div class="quantity-selector">
+                        <label for="productQuantity">Qty:</label>
+                        <select name="productQuantity" id="productQuantity">
+                            <option>0</option>
+                        </select>
+                    </div>
+                }
+
+                @if (UnitOfWork.SignInManager.IsSignedIn(User))
+                {
+                    if (Model.ProductTBL_VM.Quantity > 0)
+                    {
+                        <form asp-controller="User" asp-action="AddToCart" method="get">
+                            <input type="hidden" name="productIdAddToCart" value="@Model.ProductTBL_VM.ID" />
+                            <input type="hidden" id="quantityAddToCart" name="quantityAddToCart" />
+                            <button type="submit" id="AddToCartBtnSubmit" class="add-to-cart-btn"> Add to Cart</button>
+                        </form>
+                    }
+                    <button class="buy-now-btn"><a asp-controller="User" asp-action="CheckOutOrder" class="text-decoration-none text-black">Buy Now</a></button>
+                }
+                else
+                {
+                    <button class="signInFirst"><a asp-controller="Account" asp-action="Login" class="text-decoration-none text-black"> Add to Cart - Sign in First</a></button>
+                }
+                <div class="secure-transaction">
+                    <i class="fas fa-lock"></i> Secure transaction
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Details Section -->
+        <div class="product-details-section">
+            <h2 class="section-title">Product Details</h2>
+            <div class="product-specs">
+                <div class="spec-row">
+                    <div class="spec-name">Barcode</div>
+                    <div class="spec-value">@Model.ProductTBL_VM.Barcode</div>
+                </div>
+                <div class="spec-row">
+                    <div class="spec-name">Brand</div>
+                    <div class="spec-value">@Model.ProductTBL_VM.Brand</div>
+                </div>
+                <div class="spec-row">
+                    <div class="spec-name">Model</div>
+                    <div class="spec-value">@Model.ProductTBL_VM.Model</div>
+                </div>
+                <div class="spec-row">
+                    <div class="spec-name">Material</div>
+                    <div class="spec-value">@Model.ProductTBL_VM.Material</div>
+                </div>
+                <div class="spec-row">
+                    <div class="spec-name">Color</div>
+                    <div class="spec-value">@Model.ProductTBL_VM.Color</div>
+                </div>
+                <div class="spec-row">
+                    <div class="spec-name">Weight</div>
+                    <div class="spec-value">@Model.ProductTBL_VM.Weight</div>
+                </div>
+                <div class="spec-row">
+                    <div class="spec-name">Size</div>
+                    <div class="spec-value">@Model.ProductTBL_VM.Size</div>
+                </div>
+                <div class="spec-row">
+                    <div class="spec-name">Seller</div>
+                    <div class="spec-value">@Model.ProductTBL_VM.SupplierTBL.UserName</div>
+                </div>
+                <div class="spec-row">
+                    <div class="spec-name">Manufacturer</div>
+                    <div class="spec-value">@Model.ProductTBL_VM.ManufacturerTBL.Name</div>
+                </div>
+                <div class="spec-row">
+                    <div class="spec-name">Available In</div>
+                    <div class="spec-value">@Model.ProductTBL_VM.CountryTBLPlace.Name</div>
+                </div>
+                <div class="spec-row">
+                    <div class="spec-name">Available from</div>
+                    <div class="spec-value">@(Model.ProductTBL_VM.ValidFrom?.ToString("dd/MM/yyyy"))</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Reviews -->
+        <div class="customer-reviews">
+            <h2 class="section-title">Customer reviews</h2>
+            <div class="review-summary">
+                <div class="review-rating">@Model.ProductRate.ToString("0.0")</div>
+                <div class="review-stars">
+                    @for (int i = 1; i <= fullStars; i++)
+                    {
+                        <i class="fas fa-star full-star"></i>
+                    }
+                    @if (halfStar)
+                    {
+                        <i class="fas fa-star-half-alt half-star"></i>
+                    }
+                    @for (int i = fullStars + (halfStar ? 1 : 0); i < 5; i++)
+                    {
+                        <i class="far fa-star empty-star"></i>
+                    }
+                </div>
+            </div>
+            @foreach (var item in Model.ProductRatingTBL_VM)
+            {
+                <div class="review-item">
+                    <div class="review-title">@item.ReviewSubject</div>
+                    <div class="review-meta">
+                        <span class="review-author">By @item.AppUserWhoRated.UserName</span> - <span class="review-date">Reviewed on @(item.CreationDate?.ToString("dd/MM/yyyy"))</span>
+                    </div>
+                    <div class="review-body">
+                        <p>@item.ReviewComment.</p>
+                    </div>
+                    <div class="review-helpful">
+                        @if (item.IsHelpful)
+                        {
+                            <span>This Person found this product is helpful •</span>
+                        }
+                        else
+                        {
+                            <span>This Person found this product is not helpful •</span>
+                        }
+                        <button><a asp-controller="Home" asp-action="ReportAbuseProductRating" asp-route-productReviewId="@item.ID" class="text-decoration-none text-black">Report abuse</a></button>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            $("#AddToCartBtnSubmit").on("click", function () {
+                var selectedValue = $("#productQuantity").val();
+                $("#quantityAddToCart").val(selectedValue);
+            });
+        });
+
+        // Thumbnail gallery functionality (original script)
+        document.querySelectorAll('.thumbnail').forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                // Update main image
+                document.getElementById('main-image').src = this.getAttribute('data-image');
+                // Update active thumbnail
+                document.querySelectorAll('.thumbnail').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        const buynowbtn = document.querySelector('.buy-now-btn');
+        if (buynowbtn) {
+            let count = 0;
+            buynowbtn.addEventListener('click', function () {
+                // optional alert, but we keep the original idea
+                // alert('Proceeding to checkout...');
+            });
+        }
+    </script>
+
+

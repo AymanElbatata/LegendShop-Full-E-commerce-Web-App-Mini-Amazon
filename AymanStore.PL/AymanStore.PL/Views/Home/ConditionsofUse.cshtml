@@ -1,0 +1,167 @@
+﻿@{
+    ViewData["Title"] = "Conditions of Use";
+}
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: #f3f3f3;
+        margin: 0;
+    }
+
+    .page-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .updated {
+        text-align: center;
+        color: #777;
+        margin-bottom: 30px;
+    }
+
+    h3 {
+        margin-top: 25px;
+        color: #222;
+    }
+
+    .p55 {
+        line-height: 1.8;
+        color: #444;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+
+    li {
+        margin-bottom: 8px;
+    }
+
+    hr {
+        margin: 30px 0;
+        border: none;
+        border-top: 1px solid #eee;
+    }
+
+    /* footer links (amazon-like footer) */
+    .footer-links {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #e7e7e7;
+        font-size: 13px;
+    }
+
+        .footer-links a {
+            color: #007185;
+            text-decoration: none;
+            margin: 0 12px;
+        }
+
+            .footer-links a:hover {
+                text-decoration: underline;
+                color: #C7511F;
+            }
+</style>
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Home > Conditions of Use</span>
+    </div>
+</div>
+
+<div class="page-container">
+
+    <div class="updated">Last updated: September 2025</div>
+
+    <hr />
+
+    <h3>1. Acceptance of Conditions</h3>
+    <p class="p55">
+        By using this platform, you agree to comply with and be bound by these Conditions of Use.
+        If you do not agree, you should not access or use our services.
+    </p>
+
+    <h3>2. User Accounts</h3>
+    <p class="p55">
+        You are responsible for maintaining the confidentiality of your account and password.
+        You agree to accept responsibility for all activities that occur under your account.
+    </p>
+
+    <h3>3. Privacy</h3>
+    <p class="p55">
+        Please review our <a asp-controller="Home" asp-action="PrivacyNotice">Privacy Policy</a> to understand our practices regarding your personal data.
+    </p>
+
+    <h3>4. Electronic Communications</h3>
+    <p class="p55">
+        By using our platform, you consent to receive communications electronically,
+        including emails and notifications.
+    </p>
+
+    <h3>5. Products and Services</h3>
+    <p class="p55">
+        All product descriptions and prices are subject to change at any time without notice.
+        We reserve the right to correct any errors or inaccuracies.
+    </p>
+
+    <h3>6. Pricing and Payments</h3>
+    <p class="p55">
+        Prices are displayed in the applicable currency and may change at any time.
+        We reserve the right to cancel orders due to pricing errors.
+    </p>
+
+    <h3>7. Returns and Refunds</h3>
+    <p class="p55">
+        Returns are governed by our <a asp-controller="Home" asp-action="ReturnPolicy">Return Policy</a>.
+        Products must be returned in original condition within the allowed period.
+    </p>
+
+    <h3>8. User Conduct</h3>
+    <p class="p55">You agree not to misuse the platform. This includes:</p>
+    <ul>
+        <li>Violating laws or regulations</li>
+        <li>Posting harmful or fraudulent content</li>
+        <li>Attempting to hack or disrupt the system</li>
+    </ul>
+
+    <h3>9. Intellectual Property</h3>
+    <p class="p55">
+        All content on this platform is owned by us and protected by intellectual property laws.
+    </p>
+
+    <h3>10. Limitation of Liability</h3>
+    <p class="p55">
+        We are not responsible for any damages resulting from the use of our platform.
+    </p>
+
+    <h3>11. Modifications</h3>
+    <p class="p55">
+        We may update these Conditions of Use at any time without prior notice.
+    </p>
+
+    <h3>12. Contact Us</h3>
+    <p class="p55">
+        For any questions, please contact us at:
+        <br />
+        <strong>Write us:</strong> <a asp-controller="Home" asp-action="ContactUs">Contact Us</a>
+    </p>
+
+    <div class="footer-links">
+        <a asp-controller="Home" asp-action="PrivacyPolicy">Privacy Policy</a> |
+        <a asp-controller="Home" asp-action="PrivacyNotice">Privacy Notice</a> |
+        <a asp-controller="Home" asp-action="ReturnPolicy">Return Policy</a> |
+        <a asp-controller="Home" asp-action="HelpPage">Help Center</a>
+    </div>
+
+</div>

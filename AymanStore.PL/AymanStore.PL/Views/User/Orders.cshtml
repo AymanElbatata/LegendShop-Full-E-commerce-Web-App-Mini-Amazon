@@ -1,0 +1,139 @@
+﻿@model AymanStore.PL.Models.Orders_VM
+
+@{
+    ViewData["Title"] = "Orders";
+}
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>User > Orders</span>
+    </div>
+</div>
+
+
+<!-- Custom CSS -->
+<style>
+    .order-card {
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #fff;
+        transition: box-shadow 0.3s ease;
+    }
+
+    .order-card:hover {
+        box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .order-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .order-items {
+        margin-top: 15px;
+    }
+
+    .order-item-card {
+        border: 1px solid #f0f0f0;
+        border-radius: 8px;
+        overflow: hidden;
+        transition: transform 0.2s ease;
+    }
+
+    .order-item-card:hover {
+        transform: translateY(-3px);
+    }
+
+    .order-item-card img {
+        object-fit: cover;
+        height: 120px;
+    }
+
+    .order-item-card .card-body {
+        padding: 8px;
+    }
+
+    .order-status {
+        font-size: 0.9rem;
+    }
+
+    .cart-empty-alert {
+        background-color: #fff; /* clean white background */
+        color: #111; /* dark, high-contrast text */
+        padding: 20px; /* ample spacing */
+        border: 1px solid #ddd; /* subtle light-gray border */
+        text-align: center; /* centered message */
+        font-family: Arial, sans-serif; /* clean and readable font */
+    }
+
+        .cart-empty-alert p {
+            margin: 0;
+            font-size: 16px;
+        }
+</style>
+
+<div class="container my-4">
+
+    @if (!Model.OrderTBL_VM.Any())
+    {
+        <div class="cart-empty-alert">
+            You have No orders yet.
+        </div>
+    }
+    else
+    {
+        @foreach (var order in Model.OrderTBL_VM)
+        {
+            <div class="order-card">
+                <div class="order-header">
+                    <div>
+                        <h5 class="mb-1">Order: @order.HashCode</h5>
+                        <p class="mb-1">Total $@order.TotalAmount</p>
+                        <div class="text-muted small">
+                            Placed on @order.DateOfSubmit?.ToString("dd MMMM yyyy"))
+                        </div>
+                        <div class="order-status mt-1">
+                            Status: <span class="badge bg-success">@order.ShippingStatusTBL.Name</span>
+                        </div>
+                    </div>
+                    <div>
+                        <a asp-controller="User" asp-action="OrderDetail" asp-route-orderId="@order.ID"
+                           class="btn btn-sm btn-outline-primary">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+
+                <div class="order-items row mt-3">
+                    @{
+                        var orderDetailsList = Model.OrderDetailTBL_VM.Where(a => a.OrderTBLId == order.ID).OrderByDescending(a => a.OrderTBL.DateOfSubmit);
+                    }
+                    @foreach (var item in orderDetailsList.Take(3))
+                    {
+                        <div class="col-md-3 col-6 mb-3">
+                            <div class="card order-item-card h-100">
+                                <img src="~/Images/Products/@item.ProductTBL.Image" class="card-img-top" alt="@item.ProductTBL.Name" />
+                                <div class="card-body">
+                                    <p class="card-text mb-1 small fw-bold">@item.ProductTBL.Name</p>
+                                    <p class="text-muted small mb-0">
+                                        Qty: @item.Quantity | $@(item.Price* item.Quantity) | $@(item.ShippingCost* item.Quantity)
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                @if (orderDetailsList.Count() > 3)
+                {
+                    <div class="text-muted small">
+                        +@(orderDetailsList.Count() - 3) more items
+                    </div>
+                }
+            </div>
+        }
+    }
+</div>

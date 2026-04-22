@@ -1,0 +1,538 @@
+﻿@{
+    ViewData["Title"] = "User Management";
+}
+
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+
+<style>
+    /* ===============================
+           🌸 Global Admin Theme
+        =============================== */
+
+    .admin-hero {
+        background: linear-gradient(135deg, gray, black);
+        color: #fff;
+        padding: 40px 20px;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(214, 214, 200, 0.25);
+    }
+
+        .admin-hero h1 {
+            font-weight: 700;
+        }
+
+        .admin-hero p {
+            font-size: 1.1rem;
+            opacity: 0.95;
+        }
+
+    /* ===============================
+           💖 Card Styling
+        =============================== */
+
+    .card {
+        border-radius: 18px;
+        border: none;
+        box-shadow: 0 12px 30px rgba(214, 51, 132, 0.15);
+    }
+
+    .admin-card-header {
+        background: linear-gradient(135deg, gray, black);
+        color: #fff;
+        border-radius: 18px 18px 0 0;
+    }
+
+    /* ===============================
+           💕 Buttons
+        =============================== */
+
+    .btn-pink {
+        background: #fff;
+        color: #d63384;
+        border-radius: 30px;
+        font-weight: 600;
+        padding: 8px 20px;
+        transition: all 0.3s ease;
+    }
+
+        .btn-pink:hover {
+            background: #d63384;
+            color: #fff;
+        }
+
+    .btn-outline-primary {
+        border-color: #ff5fa2;
+        color: #ff5fa2;
+    }
+
+        .btn-outline-primary:hover {
+            background: #ff5fa2;
+            color: #fff;
+        }
+
+    /* ===============================
+           📊 DataTable
+        =============================== */
+
+    table.dataTable tbody tr:hover {
+        background-color: #fff0f7 !important;
+    }
+
+    table.dataTable thead {
+        background: #fff0f7;
+    }
+
+    /* ===============================
+           🏷 Role Badges
+        =============================== */
+
+    .badge.bg-primary {
+        background-color: #ff5fa2 !important;
+    }
+
+    /* ===============================
+           🪟 Modals
+        =============================== */
+
+    .modal-content {
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(214, 51, 132, 0.25);
+    }
+
+    .modal-header {
+        background: linear-gradient(135deg, gray, black);
+        color: #fff;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .modal-footer .btn-primary {
+        background: #ff5fa2;
+        border: none;
+        border-radius: 30px;
+    }
+
+        .modal-footer .btn-primary:hover {
+            background: #d63384;
+        }
+
+    /* ===============================
+           ⚠ Delete Modal
+        =============================== */
+
+    .modal-header.bg-danger {
+        background: linear-gradient(135deg, gray, black) !important;
+    }
+
+
+    .form-check-input:checked {
+        background-color: #ff4d6d;
+        border-color: #ff4d6d;
+    }
+
+    .form-check-input {
+        cursor: pointer;
+    }
+
+    .badge {
+        font-size: 0.85em;
+        padding: 0.35em 0.65em;
+    }
+
+    .action-btns .btn {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        margin: 0 2px;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: rgba(13, 110, 253, 0.05);
+    }
+
+
+    .modal-content {
+        border-radius: 0.5rem;
+    }
+</style>
+
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Admin > User Management</span>
+    </div>
+</div>
+
+
+<div class="container-fluid px-4">
+    <div class="card mt-4">
+        <div class="card-header admin-card-header d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">
+                <i class="fas fa-users-cog me-2"></i>User Management
+            </h4>
+            <button id="addUserBtn" class="btn btn-pink">
+                <i class="fas fa-user-plus me-1"></i> Add User
+            </button>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table id="usersTable" class="table table-hover table-striped nowrap" style="width:100%">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Roles</th>
+                            <th class="text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Data loaded via AJAX -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="modalTitle">Add New User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="userForm">
+                <input type="hidden" id="userId" />
+                <div class="modal-body">
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label for="firstName" class="form-label">First Name *</label>
+                            <input type="text" class="form-control" id="firstName" required>
+                            <div class="invalid-feedback">Please provide a first name</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="lastName" class="form-label">Last Name *</label>
+                            <input type="text" class="form-control" id="lastName" required>
+                            <div class="invalid-feedback">Please provide a last name</div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="userName" class="form-label">UserName *</label>
+                            <input type="text" class="form-control" id="userName" required>
+                            <div class="invalid-feedback">Please provide a Username</div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email *</label>
+                        <input type="email" class="form-control" id="email" required>
+                        <div class="invalid-feedback">Please provide a valid email</div>
+                    </div>
+                    <div class="mb-3" id="passwordField">
+                        <label for="password" class="form-label">Password *</label>
+                        <input type="password" class="form-control" id="password">
+                        <div class="invalid-feedback">Password must be at least 6 characters</div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Roles</label>
+                        <div id="rolesContainer" class="row">
+                            <!-- Roles loaded via AJAX -->
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Account Status</label>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="isActivated">
+                            <label class="form-check-label" for="isActivated">
+                                Activation
+                            </label>
+                        </div>
+                        <div class="form-check form-switch">
+                            <input class="form-check-input"
+                                   type="checkbox"
+                                   id="isDeleted">
+                            <label class="form-check-label" for="isDeleted">
+                                Deletion
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title">Confirm Deletion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this user?</p>
+                <p class="fw-bold" id="deleteUserName"></p>
+                <p class="text-danger">This action cannot be undone!</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap5.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
+
+    <script>
+        $(document).ready(function() {
+
+            $(document).on('change', 'input[name="selectedRoles"]', function () {
+            if (this.checked) {
+                $('input[name="selectedRoles"]').not(this).prop('checked', false);
+            }
+            });
+
+
+            // Initialize modals
+            const userModal = new bootstrap.Modal('#userModal');
+            const deleteModal = new bootstrap.Modal('#deleteModal');
+
+            // Initialize DataTable
+            const usersTable = $('#usersTable').DataTable({
+                responsive: true,
+                ajax: {
+                    // url: '/UserManagement/GetAll',
+                    url: '@Url.Action("GetAll", "UsersManagement")',
+                    dataSrc: ''
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: function(data) {
+                            // return `${data.firstName} ${data.lastName} ${data.userName}`;
+                            return `${data.userName}`;
+                        }
+                    },
+                    { data: 'email' },
+                    {
+                        data: 'roles',
+                        render: function(data) {
+                            if (data && data.length > 0) {
+                                return data.map(role =>
+                                    `<span class="badge bg-primary me-1">${role}</span>`
+                                ).join('');
+                            }
+                            return '<span class="badge bg-secondary">No Roles</span>';
+                        }
+                    },
+                    {
+                        data: 'id',
+                        className: 'text-end',
+                        render: function(data) {
+                            return `
+                                <div class="action-btns">
+                                    <button class="btn btn-sm btn-outline-primary edit-user" data-id="${data}">
+                                        <i class="fas fa-edit"></i> Edit
+                                    </button>
+                                    <button class="btn btn-sm btn-outline-danger delete-user" data-id="${data}">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </div>
+                            `;
+                        }
+                    }
+                ]
+            });
+
+            // Load roles
+            let roles = [];
+            // $.get('/UserManagement/GetRoles')
+            $.get('@Url.Action("GetRoles", "UsersManagement")')
+                .done(function(data) {
+
+                    roles = data;
+                })
+                .fail(function() {
+                    toastr.error('Failed to load roles');
+                });
+
+            // Add User button
+            $('#addUserBtn').click(function() {
+                $('#modalTitle').text('Add New User');
+                $('#userForm')[0].reset();
+                $('#userId').val('');
+                $('#passwordField').show();
+                $('#password').prop('required', true);
+                $('#password').val('Test@19777');
+                renderRoles();
+                userModal.show();
+            });
+
+            // Edit User button
+            $(document).on('click', '.edit-user', function() {
+                const userId = $(this).data('id');
+                $('#modalTitle').text('Edit User');
+                $('#userId').val(userId);
+                $('#passwordField').hide();
+                $('#password').removeAttr('required');
+
+                // $.get(`/UserManagement/GetUser/${userId}`)
+                $.get('@Url.Action("GetUser", "UsersManagement")' + '?id=' + userId)
+                        .done(function(user) {
+                        $('#firstName').val(user.firstName);
+                        $('#lastName').val(user.lastName);
+                        $('#userName').val(user.userName);
+                        $('#email').val(user.email);
+                        $('#isDeleted').prop('checked', user.isDeleted);
+                        $('#isActivated').prop('checked', user.isActivated);
+                        renderRoles(user.selectedRoles);
+                        userModal.show();
+                    })
+                    .fail(function() {
+                        toastr.error('Failed to load user data');
+                    });
+            });
+
+            // Render roles checkboxes
+            function renderRoles(selectedRoles = []) {
+                const container = $('#rolesContainer');
+                container.empty();
+
+                roles.forEach(role => {
+                    const isChecked = selectedRoles.includes(role.name) ? 'checked' : '';
+                    container.append(`
+                        <div class="col-md-4 mb-2">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox"
+                                    name="selectedRoles" value="${role.name}"
+                                    id="role-${role.id}" ${isChecked}>
+                                <label class="form-check-label" for="role-${role.id}">
+                                    ${role.name}
+                                </label>
+                            </div>
+                        </div>
+                    `);
+                });
+            }
+
+            // Save User form
+            $('#userForm').submit(function(e) {
+                e.preventDefault();
+
+                const userId = $('#userId').val();
+
+                        // 🔹 NEW VALIDATION
+                let selectedRoles = $('input[name="selectedRoles"]:checked');
+                if (selectedRoles.length === 0) {
+                    toastr.error('You must select at least one role');
+                    return false;
+                }
+
+
+                // const url = userId ? `/UserManagement/Edit/${userId}` : '/Admin/Create';
+                const url = userId ? '@Url.Action("Edit", "UsersManagement")' + '?id=' + userId : '@Url.Action("Create", "UsersManagement")';
+                const method = 'POST';
+
+                const formData = {
+                    firstName: $('#firstName').val(),
+                    lastName: $('#lastName').val(),
+                    userName: $('#userName').val(),
+                    email: $('#email').val(),
+                    isDeleted: $('#isDeleted').is(':checked'), // ✅ added
+                    isActivated: $('#isActivated').is(':checked'), // ✅ added
+                    selectedRoles: $('input[name="selectedRoles"]:checked').map(function() {
+                        return this.value;
+                    }).get()
+                };
+
+                // Only include password for new users
+                if (!userId) {
+                    formData.password = $('#password').val();
+                }
+
+                $.ajax({
+                    url: url,
+                    type: method,
+                    contentType: 'application/json',
+                    data: JSON.stringify(formData),
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success('User saved successfully');
+                            usersTable.ajax.reload();
+                            userModal.hide();
+                        } else {
+                            if (response.errors) {
+                                response.errors.forEach(error => {
+                                    toastr.error(error);
+                                });
+                            } else {
+                                toastr.error(response.error || 'Error saving user');
+                            }
+                        }
+                    },
+                    error: function(xhr) {
+                        toastr.error('An error occurred while saving');
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+
+            // Delete User
+            let userToDelete = null;
+            $(document).on('click', '.delete-user', function() {
+                const userId = $(this).data('id');
+                const userName = $(this).closest('tr').find('td:first').text();
+                $('#deleteUserName').text(userName);
+                userToDelete = userId;
+                deleteModal.show();
+            });
+
+
+            $('#confirmDelete').click(function() {
+                $.ajax({
+                    // url: `/UserManagement/Delete/${userToDelete}`,
+                    // url: `/UserManagement/Delete/${userToDelete}`,
+                    url: '@Url.Action("Delete", "UsersManagement")' + '?id=' + userToDelete,
+                    type: 'POST',
+                    success: function(response) {
+                        if (response.success) {
+                            toastr.success('User deleted successfully');
+                            usersTable.ajax.reload();
+                        } else {
+                            if (response.errors) {
+                                response.errors.forEach(error => {
+                                    toastr.error(error);
+                                });
+                            } else {
+                                toastr.error(response.error || 'Error deleting user');
+                            }
+                        }
+                        deleteModal.hide();
+                    },
+                    error: function(xhr) {
+                        toastr.error('An error occurred while deleting');
+                        console.error(xhr.responseText);
+                        deleteModal.hide();
+                    }
+                });
+            });
+        });
+    </script>
+
+}

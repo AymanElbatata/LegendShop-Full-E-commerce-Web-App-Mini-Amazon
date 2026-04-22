@@ -1,0 +1,160 @@
+﻿@model AymanStore.PL.DTO.UserProfileDTO
+
+@{
+    ViewData["Title"] = "User Home";
+}
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>User > Home</span>
+    </div>
+</div>
+
+<style>
+    body {
+        background-color: #f3f3f3;
+    }
+
+    .profile-card {
+        background: white;
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .form-control:focus {
+        border-color: #ff9900;
+        box-shadow: 0 0 5px rgba(255,153,0,0.5);
+    }
+
+    .btn-amazon {
+        background-color: #ff9900;
+        color: black;
+        font-weight: 600;
+    }
+
+        .btn-amazon:hover {
+            background-color: #e68a00;
+        }
+
+    .section-title {
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+</style>
+
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="d-flex justify-content-center">
+        <div class="alert alert-success py-1 px-3 small d-inline-flex align-items-center" role="alert" style="width: auto;">
+            @ViewBag.SuccessMessage
+        </div>
+    </div>
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-md-10 col-sm-12">
+
+            <div class="profile-card">
+
+                <form asp-action="Index" asp-controller="User" method="post">
+
+                    <div class="row">
+
+                        <!-- Email (Display only) -->
+                        <div class="col-12 mb-3">
+                            <label class="form-label">Email</label>
+                            <div class="form-control bg-light text-muted">
+                                @Model.Email
+                            </div>
+                            <small class="text-muted">Email cannot be changed</small>
+                        </div>
+
+                        <!-- First Name -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Last Name -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+
+                        <!-- Address -->
+                        <div class="col-12 mb-3">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger"></span>
+                        </div>
+
+                        <!-- Phone -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="Phone" class="form-label"></label>
+                            <input asp-for="Phone" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+
+                        <!-- Country -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CountryTBLId" class="form-label"></label>
+                            <select asp-for="CountryTBLId"
+                                    asp-items="Model.CountryOptions"
+                                    class="form-select select2">
+                                <option value="">Select Country</option>
+                            </select>
+                            <span asp-validation-for="CountryTBLId" class="text-danger"></span>
+                        </div>
+
+                        <!-- Gender -->
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="GenderTBLId" class="form-label"></label>
+                            <select asp-for="GenderTBLId"
+                                    asp-items="Model.GenderOptions"
+                                    class="form-select select2">
+                                <option value="">Select Gender</option>
+                            </select>
+                            <span asp-validation-for="GenderTBLId" class="text-danger"></span>
+                        </div>
+
+                    </div>
+
+                    <!-- Submit -->
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-amazon w-100">
+                            Save Changes
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function () {
+
+            $('.select2').select2({
+                placeholder: "Select",
+                allowClear: true,
+                width: '100%'
+            }).on('change', function () {
+                $(this).valid(); // 🔥 THIS is the fix
+            });
+
+        });
+    </script>
+
+}

@@ -1,0 +1,218 @@
+﻿@model SupplierDashboard_VM
+
+@{
+    ViewData["Title"] = "Supplier Dashboard";
+}
+
+<style>
+    body {
+        background: #f3f3f3;
+    }
+
+    .dashboard-container {
+        padding: 20px 10px;
+    }
+
+    .welcome-text {
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 20px;
+    }
+
+    /* Cards */
+    .dashboard-card {
+        background: #fff;
+        border-radius: 10px;
+        padding: 18px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        text-align: center;
+        transition: 0.3s;
+        height: 100%;
+    }
+
+        .dashboard-card:hover {
+            transform: translateY(-4px);
+        }
+
+    .dashboard-title {
+        font-size: 13px;
+        color: #777;
+    }
+
+    .dashboard-value {
+        font-size: 24px;
+        font-weight: bold;
+        margin-top: 5px;
+        color: #222;
+    }
+
+    /* Quick actions */
+    .quick-actions {
+        margin-top: 25px;
+    }
+
+    .btn-amazon {
+        background: #ff9900;
+        border: none;
+        padding: 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        color: #000;
+        width: 100%;
+        font-size: 14px;
+    }
+
+        .btn-amazon:hover {
+            background: #e68a00;
+        }
+
+    /* Tablet */
+    @@media (max-width: 991px) {
+        .welcome-text
+
+    {
+        font-size: 18px;
+        text-align: center;
+    }
+
+    }
+
+    /* Mobile */
+    @@media (max-width: 576px) {
+        .dashboard-container
+
+    {
+        padding: 15px 8px;
+    }
+
+    .welcome-text {
+        font-size: 16px;
+        text-align: center;
+    }
+
+    .dashboard-value {
+        font-size: 20px;
+    }
+
+    .btn-amazon {
+        font-size: 13px;
+        padding: 9px;
+    }
+
+    }
+</style>
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Supplier > Home</span>
+    </div>
+</div>
+
+<div class="container dashboard-container">
+
+    <!-- Welcome -->
+    <div class="welcome-text text-center text-md-start">
+        Welcome, @Model.SupplierName 👋
+    </div>
+
+    <!-- Stats -->
+    <div class="row g-3">
+
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="dashboard-card">
+                <div class="dashboard-title">Products</div>
+                <div class="dashboard-value">@Model.TotalProducts</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="dashboard-card">
+                <div class="dashboard-title">Expected Orders</div>
+                <div class="dashboard-value">@Model.ExpectedOrders</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="dashboard-card">
+                <div class="dashboard-title">Total Orders</div>
+                <div class="dashboard-value">@Model.TotalOrders</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="dashboard-card">
+                <div class="dashboard-title">Completed Orders</div>
+                <div class="dashboard-value text-success">@Model.CompletedOrders</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="dashboard-card">
+                <div class="dashboard-title">Pending Orders</div>
+                <div class="dashboard-value text-warning">@Model.PendingOrders</div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="dashboard-card">
+                <div class="dashboard-title">Canceled Orders</div>
+                <div class="dashboard-value text-danger">@Model.CanceledOrders</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="dashboard-card">
+                <div class="dashboard-title">Order's' Reviews</div>
+                <div class="dashboard-value">@Model.ReviewsOrders</div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="dashboard-card">
+                <div class="dashboard-title">Product's Complaints</div>
+                <div class="dashboard-value">@Model.ComplainProducts (@Model.ComplainProductsNew)</div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="dashboard-card">
+                <div class="dashboard-title">Total Income</div>
+                <div class="dashboard-value text-primary">
+                    @Model.TotalIncome USD
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6 col-12">
+            <div class="dashboard-card">
+                <div class="dashboard-title">Cash Balance</div>
+                <div class="dashboard-value text-info">
+                    @Model.CashBalance USD
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row quick-actions g-3">
+
+        <div class="col-lg-4 col-md-6 col-12">
+            <a asp-action="Create" asp-controller="Product" class="btn btn-amazon">
+                ➕ Add Product
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-md-6 col-12">
+            <a asp-action="Index" asp-controller="Product" class="btn btn-amazon">
+                📦 Manage Products
+            </a>
+        </div>
+
+        <div class="col-lg-4 col-12">
+            <a asp-action="SupplierOrders" asp-controller="Supplier" class="btn btn-amazon">
+                🛒 Manage Orders
+            </a>
+        </div>
+        <div class="col-lg-4 col-12">
+            <a asp-action="ComplainProducts" asp-controller="Product" class="btn btn-amazon">
+                🛒 Manage Complaints
+            </a>
+        </div>
+
+    </div>
+ </div>

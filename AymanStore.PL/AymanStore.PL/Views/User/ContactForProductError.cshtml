@@ -1,0 +1,151 @@
+﻿@using AymanStore.PL.DTO
+@model ContactForProductErrorDTO
+
+@{
+    ViewData["Title"] = "Product Issues";
+}
+
+<style>
+    .contact-container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start; /* بدل center */
+        min-height: 100vh;
+        background-color: #f3f3f3;
+        padding-top: 40px; /* ترفعها لفوق */
+    }
+
+    .contact-card {
+        background: #fff;
+        padding: 30px; /* أكبر */
+        border-radius: 12px;
+        width: 100%;
+        max-width: 500px; /* أكبر عرض */
+        box-shadow: 0 3px 12px rgba(0,0,0,0.1);
+    }
+
+        .contact-card h2 {
+            font-size: 22px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+    .sub-text {
+        font-size: 14px;
+        text-align: center;
+        margin-bottom: 20px;
+        color: #666;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-control {
+        padding: 10px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
+
+    .btn-send {
+        padding: 12px;
+        font-size: 15px;
+        border-radius: 8px;
+    }
+
+    .text-danger {
+        font-size: 12px;
+        color: red;
+        margin-top: 5px;
+        display: block;
+    }
+
+    .success-box {
+        margin-top: 15px;
+        padding: 12px;
+        background-color: #e6ffed;
+        color: #2e7d32;
+        border-radius: 8px;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    .product-header {
+        display: flex;
+        justify-content: center; /* مركز أفقي */
+        align-items: center; /* مركز عمودي */
+        margin-bottom: 20px;
+    }
+
+    .product-img {
+        width: 80px; /* حجم الصورة */
+        height: 80px;
+        object-fit: cover; /* crop بشكل جميل */
+        border-radius: 8px;
+        border: 1px solid #ddd;
+    }
+
+</style>
+
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Home > Product Errors</span>
+    </div>
+</div>
+
+
+<div class="contact-container">
+    <div class="contact-card">
+
+        <h2>Contact about this product</h2>
+        <p class="sub-text">Report an issue or ask about this product.</p>
+        <!-- Validation Summary -->
+        <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+        <form asp-action="ContactForProductError" asp-controller="User" method="post">
+            @Html.AntiForgeryToken()
+
+            <input type="hidden" asp-for="ProductTBL_VM.ID" />
+            <input type="hidden" asp-for="ProductTBL_VM.Barcode" />
+            <input type="hidden" asp-for="ProductTBL_VM.Name" />
+            <input type="hidden" asp-for="ProductTBL_VM.Image" />
+
+            <div class="product-header">
+                <a asp-controller="Home" asp-action="ProductDetail" asp-route-ProductId="@Model.ProductTBL_VM.ID">
+                    <img src="~/Images/Products/@Model.ProductTBL_VM.Image" alt="Product Image" class="product-img" />
+                </a>
+            </div>
+
+            <div class="row">
+
+                <div class="col-md-6 form-group">
+                    <label asp-for="ProductTBL_VM.Barcode"></label>
+                    <input asp-for="ProductTBL_VM.Barcode" class="form-control" disabled readonly />
+                </div>
+
+                <div class="col-md-6 form-group">
+                    <label asp-for="ProductTBL_VM.Name">Name</label>
+                    <input asp-for="ProductTBL_VM.Name" class="form-control" disabled readonly />
+                </div>
+
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Message"></label>
+                <textarea asp-for="Message" class="form-control" rows="5" placeholder="Describe your problem..."></textarea>
+                <span asp-validation-for="Message" class="text-danger"></span>
+            </div>
+
+            <button type="submit" id="sendBtn" class="btn-send">
+                Send Message
+            </button>
+        </form>
+
+    </div>
+</div>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

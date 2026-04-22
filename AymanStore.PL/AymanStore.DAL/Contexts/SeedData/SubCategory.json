@@ -1,0 +1,185 @@
+[
+  {
+    "Name": "Mobile Phones",
+    "CategoryTBLId": 1
+  },
+  {
+    "Name": "Laptops",
+    "CategoryTBLId": 1
+  },
+  {
+    "Name": "Tablets",
+    "CategoryTBLId": 1
+  },
+  {
+    "Name": "Cameras",
+    "CategoryTBLId": 1
+  },
+  {
+    "Name": "Wearables",
+    "CategoryTBLId": 1
+  },
+  {
+    "Name": "Accessories",
+    "CategoryTBLId": 1
+  },
+
+  {
+    "Name": "Men's Clothing",
+    "CategoryTBLId": 2
+  },
+  {
+    "Name": "Women's Clothing",
+    "CategoryTBLId": 2
+  },
+  {
+    "Name": "Kids' Clothing",
+    "CategoryTBLId": 2
+  },
+  {
+    "Name": "Shoes",
+    "CategoryTBLId": 2
+  },
+  {
+    "Name": "Bags",
+    "CategoryTBLId": 2
+  },
+  {
+    "Name": "Watches & Jewelry",
+    "CategoryTBLId": 2
+  },
+
+  {
+    "Name": "Furniture",
+    "CategoryTBLId": 3
+  },
+  {
+    "Name": "Home Decor",
+    "CategoryTBLId": 3
+  },
+  {
+    "Name": "Bedding",
+    "CategoryTBLId": 3
+  },
+  {
+    "Name": "Kitchen Appliances",
+    "CategoryTBLId": 3
+  },
+  {
+    "Name": "Cookware",
+    "CategoryTBLId": 3
+  },
+  {
+    "Name": "Storage & Organization",
+    "CategoryTBLId": 3
+  },
+
+  {
+    "Name": "Makeup",
+    "CategoryTBLId": 4
+  },
+  {
+    "Name": "Skincare",
+    "CategoryTBLId": 4
+  },
+  {
+    "Name": "Hair Care",
+    "CategoryTBLId": 4
+  },
+  {
+    "Name": "Fragrances",
+    "CategoryTBLId": 4
+  },
+  {
+    "Name": "Men’s Grooming",
+    "CategoryTBLId": 4
+  },
+
+  {
+    "Name": "Fitness Equipment",
+    "CategoryTBLId": 5
+  },
+  {
+    "Name": "Outdoor Gear",
+    "CategoryTBLId": 5
+  },
+  {
+    "Name": "Team Sports",
+    "CategoryTBLId": 5
+  },
+  {
+    "Name": "Cycling",
+    "CategoryTBLId": 5
+  },
+  {
+    "Name": "Camping & Hiking",
+    "CategoryTBLId": 5
+  },
+
+  {
+    "Name": "Action Figures",
+    "CategoryTBLId": 6
+  },
+  {
+    "Name": "Board Games",
+    "CategoryTBLId": 6
+  },
+  {
+    "Name": "Dolls",
+    "CategoryTBLId": 6
+  },
+  {
+    "Name": "Educational Toys",
+    "CategoryTBLId": 6
+  },
+  {
+    "Name": "Remote Control Toys",
+    "CategoryTBLId": 6
+  },
+
+  {
+    "Name": "Fiction",
+    "CategoryTBLId": 7
+  },
+  {
+    "Name": "Non-Fiction",
+    "CategoryTBLId": 7
+  },
+  {
+    "Name": "Children’s Books",
+    "CategoryTBLId": 7
+  },
+  {
+    "Name": "School Supplies",
+    "CategoryTBLId": 7
+  },
+  {
+    "Name": "Office Supplies",
+    "CategoryTBLId": 7
+  },
+
+  {
+    "Name": "Fresh Fruits & Vegetables",
+    "CategoryTBLId": 8
+  },
+  {
+    "Name": "Beverages",
+    "CategoryTBLId": 8
+  },
+  {
+    "Name": "Snacks",
+    "CategoryTBLId": 8
+  },
+  {
+    "Name": "Dairy Products",
+    "CategoryTBLId": 8
+  },
+  {
+    "Name": "Bakery",
+    "CategoryTBLId": 8
+  },
+  {
+    "Name": "Household Essentials",
+    "CategoryTBLId": 8
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "2 Days",
+    "Description": "VIP"
+  },
+  {
+    "Name": "4 Days",
+    "Description": "Ultra"
+  },
+  {
+    "Name": "7 Days",
+    "Description": "Premium"
+  },
+  {
+    "Name": "10 Days",
+    "Description": "Express"
+  },
+  {
+    "Name": "15 Day",
+    "Description": "Slow"
+  }
+]

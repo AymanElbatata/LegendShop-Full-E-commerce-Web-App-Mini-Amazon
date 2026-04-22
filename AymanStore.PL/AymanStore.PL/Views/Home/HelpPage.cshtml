@@ -1,0 +1,173 @@
+﻿@{
+    ViewData["Title"] = "Help Center";
+}
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: #f3f3f3;
+        margin: 0;
+    }
+
+    .page-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .updated {
+        text-align: center;
+        color: #777;
+        margin-bottom: 30px;
+    }
+
+    h3 {
+        margin-top: 25px;
+        color: #222;
+    }
+
+    .p55 {
+        line-height: 1.8;
+        color: #444;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+
+    li {
+        margin-bottom: 8px;
+    }
+
+    hr {
+        margin: 30px 0;
+        border: none;
+        border-top: 1px solid #eee;
+    }
+
+    .box {
+        background: #fafafa;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 4px solid #0073e6;
+    }
+
+    .warning-box {
+        background: #fff8e6;
+        padding: 15px;
+        border-radius: 8px;
+        margin: 15px 0;
+        border-left: 4px solid #ffb300;
+    }
+
+    /* footer links (amazon-like footer) */
+    .footer-links {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #e7e7e7;
+        font-size: 13px;
+    }
+
+        .footer-links a {
+            color: #007185;
+            text-decoration: none;
+            margin: 0 12px;
+        }
+
+            .footer-links a:hover {
+                text-decoration: underline;
+                color: #C7511F;
+            }
+</style>
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Home > Help Page</span>
+    </div>
+</div>
+
+<div class="page-container">
+
+    <div class="updated">Last updated: September 2025</div>
+
+    <hr />
+
+    <h3>1. Getting Started</h3>
+    <p class="p55">
+        Welcome to our Help Center. You can find answers to common questions about using our platform.
+    </p>
+
+    <div class="box">
+        ✔ Create an account to start using the platform
+        ✔ Browse products by categories
+        ✔ Add items to your cart easily
+    </div>
+
+    <h3>2. Account Support</h3>
+    <p class="p55">
+        If you have issues logging in or accessing your account:
+    </p>
+    <ul>
+        <li>Use the "Forgot Password" option</li>
+        <li>Check your email for reset instructions</li>
+        <li>Contact support if you cannot recover access</li>
+    </ul>
+
+    <h3>3. Orders</h3>
+    <p class="p55">
+        You can view and track your orders from your account dashboard.
+    </p>
+
+    <div class="box">
+        Order Status Flow: Pending → Processing → Confirmed → Delivered
+    </div>
+
+    <h3>4. Payments</h3>
+    <div class="warning-box">
+        ⚠ Important: We do not support online payments at this time.
+    </div>
+
+    <p class="p55">
+        All payments are handled manually based on request confirmation.
+        After placing your order, our team will contact you to complete the payment process.
+    </p>
+
+    <ul>
+        <li>Payment is confirmed after order review</li>
+        <li>Payment method will be provided upon contact</li>
+        <li>Order processing starts after confirmation</li>
+    </ul>
+
+    <h3>5. Returns & Refunds</h3>
+    <p class="p55">
+        If you need to return an item, please check our Returns Policy page.
+    </p>
+
+    <h3>6. Support</h3>
+    <p class="p55">
+        If you need assistance, contact us:
+    </p>
+
+    <div class="box">
+        <strong>Write us:</strong> <a asp-controller="Home" asp-action="ContactUs">Contact Us</a>
+        <br />
+        <strong>Response Time:</strong> 24–48 hours
+    </div>
+    <div class="footer-links">
+        <a asp-controller="Home" asp-action="ConditionsofUse">Conditions of Use</a> |
+        <a asp-controller="Home" asp-action="PrivacyPolicy">Privacy Policy</a> |
+        <a asp-controller="Home" asp-action="PrivacyNotice">Privacy Notice</a> |
+        <a asp-controller="Home" asp-action="ReturnPolicy">Return Policy</a>
+    </div>
+
+</div>

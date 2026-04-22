@@ -1,0 +1,202 @@
+﻿@model AymanStore.PL.Models.Products_VM
+
+@if (Model.ProductTBL_VM.Any())
+{
+    foreach (var product in Model.ProductTBL_VM)
+    {
+        <div class="product-card" data-product-id="@product.ID">
+            <div class="product-header" onclick="toggleProduct(@product.ID)">
+                <div class="row align-items-center">
+                    <div class="col-md-5">
+                        <i class="fas fa-chevron-down" style="margin-right: 10px;"></i>
+                        <strong>@product.Name</strong>
+                        @if (!string.IsNullOrEmpty(product.Barcode))
+                        {
+                            <span class="badge">@product.Barcode</span>
+                        }
+                    </div>
+                    <div class="col-md-3">
+                        <i class="fas fa-tag"></i> $@(product.SellingPrice?.ToString("N0") ?? "0")
+                    </div>
+                    <div class="col-md-2">
+                        <i class="fas fa-box"></i> Qty: @(product.Quantity ?? 0)
+                    </div>
+                    <div class="col-md-2 text-right">
+                        <button class="btn btn-warning btn-sm" onclick="event.stopPropagation(); editProduct(@product.ID)">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deleteProduct(@product.ID, '@product.Name.Replace("'", "\\'")')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="product-body" id="product-@product.ID">
+                <div class="product-details-section">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h4 class="section-title">
+                                <i class="fas fa-info-circle"></i> Product Details
+                            </h4>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <div class="info-label">Description</div>
+                                    <div class="info-value">@(product.Description ?? "N/A")</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Model</div>
+                                    <div class="info-value">@(product.Model ?? "N/A")</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Material</div>
+                                    <div class="info-value">@(product.Material ?? "N/A")</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Color</div>
+                                    <div class="info-value">@(product.Color ?? "N/A")</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Weight</div>
+                                    <div class="info-value">@(product.Weight ?? "N/A")</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Size</div>
+                                    <div class="info-value">@(product.Size ?? "N/A")</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Brand</div>
+                                    <div class="info-value">@(product.Brand ?? "N/A")</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Purchasing Price</div>
+                                    <div class="info-value">$@(product.PurchasingPrice?.ToString("N0") ?? "0")</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Valid From</div>
+                                    <div class="info-value">@(product.ValidFrom?.ToString("yyyy-MM-dd") ?? "N/A")</div>
+                                </div>
+                                <div class="info-item">
+                                    <div class="info-label">Status</div>
+                                    <div class="info-value">
+                                        @if (product.IsPublished)
+                                        {
+                                            <span class="badge badge-success">Published</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-secondary">Draft</span>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <h4 class="section-title">
+                                <i class="fas fa-images"></i> Photos
+                                <span class="plus-button" onclick="event.stopPropagation(); openPhotoModal(@product.ID)">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                            </h4>
+                            <div class="photo-gallery" id="photos-@product.ID">
+                                @{
+                                    var productPhotos = Model.ProductPhotoTBL_VM.Where(p => p.ProductTBLId == product.ID);
+                                }
+                                @if (productPhotos.Any())
+                                {
+                                    foreach (var photo in productPhotos)
+                                    {
+                                        <div class="photo-item" id="photo-@photo.ID">
+                                            <img src="~/Images/Products/@photo.Image" class="photo-thumbnail" alt="Product photo">
+                                            <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deletePhoto(@photo.ID, @product.ID)">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="text-muted text-center p-3">
+                                        <i class="fas fa-camera fa-2x mb-2"></i>
+                                        <p>No photos uploaded</p>
+                                        <small>Click + to add photos</small>
+                                    </div>
+                                }
+                            </div>
+
+                            <h4 class="section-title" style="margin-top: 25px;">
+                                <i class="fas fa-list"></i> Specifications
+                                <span class="plus-button" onclick="event.stopPropagation(); openSpecModal(@product.ID)">
+                                    <i class="fas fa-plus"></i>
+                                </span>
+                            </h4>
+                            <div class="specs-container" id="specs-@product.ID">
+                                @{
+                                    var productSpecs = Model.ProductSpecificationTBL_VM.Where(s => s.ProductTBLId == product.ID);
+                                }
+                                @if (productSpecs.Any())
+                                {
+                                    foreach (var spec in productSpecs)
+                                    {
+                                        <div class="spec-item" id="spec-@spec.ID">
+                                            <div class="spec-content">
+@*                                                 <span class="spec-key">@spec.Key:</span>
+ *@                                                <span class="spec-value">@spec.Name</span>
+                                            </div>
+                                            <button class="btn btn-danger btn-sm" onclick="event.stopPropagation(); deleteSpec(@spec.ID, @product.ID)">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                    <div class="text-muted text-center p-3">
+                                        <i class="fas fa-clipboard-list fa-2x mb-2"></i>
+                                        <p>No specifications added</p>
+                                        <small>Click + to add specifications</small>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <div class="empty-state">
+        <i class="fas fa-box-open"></i>
+        <h3>No Products Found</h3>
+        <p>No products match your search criteria</p>
+        <button class="btn btn-amazon" onclick="clearSearch()">
+            <i class="fas fa-undo"></i> Clear Search
+        </button>
+    </div>
+}
+
+<style>
+    .badge-success {
+        background-color: #28a745;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+    .badge-secondary {
+        background-color: #6c757d;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 4px;
+        font-size: 12px;
+    }
+
+    .text-muted i {
+        display: block;
+        margin: 0 auto;
+    }
+</style>

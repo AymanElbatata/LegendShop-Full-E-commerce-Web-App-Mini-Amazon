@@ -1,0 +1,207 @@
+﻿@model AymanStore.PL.Models.ShoppingCart_VM
+
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+<!-- Custom CSS -->
+<style>
+    .cart-card {
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 15px;
+        margin-bottom: 20px;
+        background-color: #fff;
+        transition: box-shadow 0.3s ease;
+    }
+
+        .cart-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+    .cart-item-img {
+        max-width: 100px;
+        height: auto;
+        border-radius: 8px;
+    }
+
+    .cart-summary {
+        border: 1px solid #e5e5e5;
+        border-radius: 12px;
+        padding: 20px;
+        background-color: #fafafa;
+    }
+
+    .cart-qty {
+        width: 70px;
+    }
+
+    .cart-item:hover {
+        background-color: #fdfdfd;
+    }
+
+    .summary-box {
+        top: 100px; /* sticky summary like Amazon */
+        background-color: #fff;
+    }
+
+    .btn-warning {
+        background-color: #f0c14b;
+        border-color: #a88734;
+        color: #111;
+        font-weight: bold;
+    }
+
+        .btn-warning:hover {
+            background-color: #ddb347;
+            border-color: #9c7e31;
+            color: #111;
+        }
+
+    .delete-link {
+        background: none;
+        border: none;
+        color: #007185; /* Amazon's link blue */
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+        font-weight: normal;
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+        .delete-link:hover {
+            text-decoration: underline;
+            color: #C7511F; /* Amazon hover orange/red */
+        }
+
+    .cart-empty-alert {
+        background-color: #fff; /* clean white background */
+        color: #111; /* dark, high-contrast text */
+        padding: 20px; /* ample spacing */
+        border: 1px solid #ddd; /* subtle light-gray border */
+        text-align: center; /* centered message */
+        font-family: Arial, sans-serif; /* clean and readable font */
+    }
+
+        .cart-empty-alert p {
+            margin: 0;
+            font-size: 16px;
+        }
+
+</style>
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>User > Shopping Cart</span>
+    </div>
+</div>
+
+
+<div class="container my-4">
+    @if (ViewBag.NotAllowedMessage != null)
+    {
+        <span class="text-center ms-2 px-2" style="color:darkred">@ViewBag.NotAllowedMessage</span>
+    }
+
+
+    @if (!Model.OrderDetailTBL_VM.Any())
+    {
+        <div class="cart-empty-alert">
+            <p>Your Cart is empty.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+        <div class="col-lg-8">
+
+                @foreach (var item in Model.OrderDetailTBL_VM)
+                {
+                    <div class="cart-item row border-bottom py-3 align-items-center">
+                        <!-- Product Image -->
+                        <div class="col-3 col-md-2">
+                            <a asp-controller="Home" asp-action="ProductDetail" asp-route-ProductId="@item.ProductTBLId">
+                                <img src="~/Images/Products/@item.ProductTBL.Image" class="img-fluid rounded" alt="@item.ProductTBL.Name" />
+                            </a>
+                        </div>
+
+                        <!-- Product Details -->
+                        <div class="col-6 col-md-7">
+                            <h6 class="mb-1">@item.ProductTBL.Name</h6>
+                            <div class="text-success small mb-1">In Stock</div>
+
+                            <!-- Quantity Update -->
+                            <form asp-controller="User" asp-action="UpdateQuantityCart" method="get" class="d-inline">
+                                <input type="hidden" name="productId" value="@item.ProductTBLId" />
+                                <select name="productQuantity" class="form-select form-select-sm d-inline w-auto"
+                                        onchange="this.form.submit()">
+                                    @for (int i = 1; i <= item.ProductTBL.Quantity; i++)
+                                    {
+                                            <option value="@i" selected="@(i == item.Quantity ? "selected" : null)">Qty: @i</option>
+                                    }
+                                </select>
+                            </form>
+
+                            <!-- Remove -->
+                            <form asp-controller="User" asp-action="RemoveFromCart" method="post" class="d-inline ms-2">
+                                <input type="hidden" name="productId" value="@item.ProductTBLId" />
+                                <button type="submit" class="delete-link" onclick="return confirmDelete()">Delete</button>
+                            </form>
+                        </div>
+
+                        <!-- Price -->
+                        <div class="col-3 col-md-3 text-end">
+                            <span class="fw-bold">$@(item.Price* item.Quantity) + $@(item.Quantity* item.ShippingCost)</span>
+                        </div>
+                    </div>
+                }
+            
+        </div>
+
+        <!-- Order Summary -->
+        <div class="col-lg-4">
+            @if (Model.OrderDetailTBL_VM.Any())
+            {
+                <div class="summary-box p-3 border rounded shadow-sm sticky-top">
+                    @{
+                        int totalAmountPrices = 0;
+                        int totalAmountShipping = 0;
+                        int totalAmountPricesWithShipping = 0;
+                        foreach (var item in Model.OrderDetailTBL_VM)
+                        {
+                            totalAmountPrices += Convert.ToInt32(item.Price * item.Quantity);
+                            totalAmountShipping += Convert.ToInt32(item.ShippingCost * item.Quantity);
+                            totalAmountPricesWithShipping += Convert.ToInt32((item.Price * item.Quantity) + (item.Quantity * item.ShippingCost));
+                        }
+                    }
+
+                    <h6 class="mb-3">Order Summary</h6>
+                    <div class="d-flex justify-content-between">
+                        <span>Items:</span>
+                        <span>$@totalAmountPrices</span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <span>Shipping:</span>
+                        <span>$@totalAmountShipping</span>
+                    </div>
+                    <hr />
+                    <div class="d-flex justify-content-between fw-bold">
+                        <span>Total:</span>
+                        <span>$@totalAmountPricesWithShipping</span>
+                    </div>
+                        <a asp-controller="User" asp-action="CheckOutOrder" class="btn btn-warning w-100 mt-3">
+                        Proceed to Checkout
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+    }
+</div>
+
+<script>
+    function confirmDelete() {
+        return confirm("Are you sure you want to delete this product?");
+    }
+</script>

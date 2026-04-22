@@ -1,0 +1,285 @@
+﻿@model ShippingCompanyCostTBL_VM
+
+@{
+    ViewData["Title"] = "Shipping & Import Fees";
+}
+
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+/*     body {
+        background: #eaeded; 
+        font-family: "Amazon Ember", Arial, sans-serif;
+        line-height: 1.45;
+        padding: 24px 16px;
+    } */
+
+    /* main white container card – simple, spacious, amazon style */
+    .shipping-card {
+        max-width: 960px;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.03);
+        padding: 28px 36px 40px 36px;
+        transition: all 0.2s ease;
+    }
+
+    /* breadcrumb row (amazon style) */
+    .breadcrumb {
+        font-size: 13px;
+        color: #565959;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #e7e7e7;
+        padding-bottom: 8px;
+    }
+
+
+    /* main title */
+    h1 {
+        font-size: 28px;
+        font-weight: 500;
+        margin: 8px 0 4px 0;
+        color: #0F1111;
+        letter-spacing: -0.2px;
+    }
+
+    .updated-info {
+        font-size: 14px;
+        color: #565959;
+        margin-bottom: 16px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #eaecec;
+    }
+
+    /* highlight callout box (like amazon info alert) */
+    .highlight-box {
+        background: #f0f2f2;
+        border-left: 4px solid #ff9900;
+        padding: 14px 18px;
+        margin: 20px 0 18px 0;
+        font-size: 14px;
+        color: #0F1111;
+        border-radius: 6px;
+    }
+
+        .highlight-box strong {
+            color: #C7511F;
+        }
+
+    /* section titles (h3 amazon style) */
+    h3 {
+        font-size: 18px;
+        font-weight: 700;
+        margin: 24px 0 8px 0;
+        color: #0F1111;
+    }
+
+    /* regular paragraph */
+    .p55 {
+        font-size: 15px;
+        color: #1f1f1f;
+        margin-bottom: 12px;
+        line-height: 1.5;
+    }
+
+    /* amazon price box (reddish price) */
+    .price-badge {
+        background: #F7F8FA;
+        border: 1px solid #D5D9D9;
+        padding: 12px 18px;
+        border-radius: 8px;
+        display: inline-block;
+        width: 100%;
+        margin: 10px 0 16px 0;
+    }
+
+    .shipping-price {
+        font-size: 32px;
+        font-weight: 700;
+        color: #B12704; /* amazon orange-red */
+        letter-spacing: -0.5px;
+    }
+
+    .price-label {
+        font-size: 14px;
+        color: #565959;
+        margin-left: 8px;
+        font-weight: normal;
+    }
+
+    /* bullet lists - clean spacing */
+    ul {
+        margin: 8px 0 12px 20px;
+    }
+
+    li {
+        font-size: 15px;
+        margin-bottom: 8px;
+        color: #1a1a1a;
+    }
+
+    /* simple divider */
+    hr {
+        margin: 20px 0;
+        border: 0;
+        border-top: 1px solid #e7e7e7;
+    }
+
+    /* features row (checkmark style) */
+    .feature-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        margin-top: 15px;
+        background: #FEF9E6;
+        padding: 16px 20px;
+        border-radius: 10px;
+        border: 1px solid #f0c14b;
+        font-size: 14px;
+    }
+
+    .feature-item {
+        flex: 1;
+        min-width: 180px;
+    }
+
+        .feature-item::before {
+            content: "✔️ ";
+            color: #008a00;
+            font-weight: bold;
+        }
+
+    /* footer links (amazon-like footer) */
+    .footer-links {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #e7e7e7;
+        font-size: 13px;
+    }
+
+        .footer-links a {
+            color: #007185;
+            text-decoration: none;
+            margin: 0 12px;
+        }
+
+            .footer-links a:hover {
+                text-decoration: underline;
+                color: #C7511F;
+            }
+
+    /* small note */
+    .note-text {
+        font-size: 13px;
+        color: #6c6e70;
+        margin-top: 12px;
+    }
+
+    /* responsiveness */
+    @@media (max-width: 650px) {
+        .shipping-card {
+            padding: 20px 18px;
+        }
+
+        h1 {
+            font-size: 24px;
+        }
+
+        .shipping-price {
+            font-size: 26px;
+        }
+
+        .feature-list {
+            flex-direction: column;
+            gap: 10px;
+        }
+    }
+</style>
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Home > Shipping & Import Fees </span>
+    </div>
+</div>
+
+<div class="shipping-card">
+
+    <!-- dynamic from / to info -->
+    <div class="updated-info">
+        🚚 Shipping from
+        <strong>@(Model?.CountryTBLSendFrom?.Name ?? "United States")</strong>
+        to
+        <strong>@(Model?.CountryTBLSendTo?.Name ?? "Germany")</strong>
+        &nbsp;|&nbsp; Updated: September 2025
+    </div>
+
+    <!-- Partner highlight box (amazon-like) -->
+    <div class="highlight-box">
+        💡 We partner with trusted shipping providers like
+        <strong>@(Model?.ShippingCompanyTBL?.Name ?? "DHL Express")</strong>
+        to deliver your orders safely and efficiently worldwide.
+    </div>
+
+    <!-- Shipping & Import Fees Deposit Section -->
+    <h3>Shipping & Import Fees Deposit</h3>
+    <p class=".p55">
+        The total amount charged for shipping and import fees deposit to
+        <strong>@(Model?.CountryTBLSendTo?.Name ?? "destination country")</strong> is:
+    </p>
+    <div class="price-badge">
+        <span class="shipping-price">$@(Model?.Cost != null ? Model.Cost.Value.ToString("0.00") : "14.99")</span>
+        <span class="price-label">includes shipping + estimated duties</span>
+    </div>
+    <p class=".p55">This amount includes both the international shipping cost and an estimated deposit for customs duties and import taxes required by the destination country.</p>
+
+    <!-- What's included bullet list -->
+    <h3>What Does This Include?</h3>
+    <ul>
+        <li>🌍 International shipping via <strong>@(Model?.ShippingCompanyTBL?.Name ?? "Amazon Global Logistics")</strong></li>
+        <li>📦 Customs duties and import tax deposit (prepaid)</li>
+        <li>🔄 Handling, tracking, and processing fees</li>
+    </ul>
+
+    <!-- Delivery estimate section -->
+    <h3>Delivery Time</h3>
+    <p class=".p55">Estimated delivery time is <strong>2 – 30 business days</strong>, depending on your selection when creating order and customs clearance and local delivery services. You'll receive tracking updates every step of the way.</p>
+
+    <!-- Important information box (simple list) -->
+    <h3>Important Information</h3>
+    <ul>
+        <li>🔍 Customs authorities may delay shipments depending on inspections.</li>
+        <li>💰 Actual import charges may vary slightly from the estimated deposit.</li>
+        <li>✅ If the actual fees are lower, you may be refunded the difference.</li>
+        <li>⚠️ If higher, additional charges may be required upon delivery (rare).</li>
+    </ul>
+
+    <!-- Checkmark style highlight / trust badges -->
+    <div class="feature-list">
+        <div class="feature-item">Transparent pricing with no hidden costs</div>
+        <div class="feature-item">Secure international shipping & tracking</div>
+        <div class="feature-item">Reliable delivery partners & support</div>
+    </div>
+
+    <!-- Additional note: Amazon style fine print -->
+    <hr />
+    <p class="note-text">
+        * The Import Fees Deposit is an estimate of duties and taxes that may be owed to customs authorities in the destination country.
+        Amazon collects this deposit on your behalf and uses it to pay any applicable customs fees. Any remaining balance will be refunded to your original payment method.
+    </p>
+
+    <!-- Footer links reminiscent of Amazon -->
+    <div class="footer-links">
+        <a asp-controller="Home" asp-action="ConditionsofUse">Conditions of Use</a> |
+        <a asp-controller="Home" asp-action="PrivacyPolicy">Privacy Policy</a> |
+        <a asp-controller="Home" asp-action="PrivacyNotice">Privacy Notice</a> |
+        <a asp-controller="Home" asp-action="ReturnPolicy">Return Policy</a>
+        <a asp-controller="Home" asp-action="HelpPage">Help Center</a>
+        <a asp-controller="Home" asp-action="FAQ">FAQ</a>
+    </div>
+</div>

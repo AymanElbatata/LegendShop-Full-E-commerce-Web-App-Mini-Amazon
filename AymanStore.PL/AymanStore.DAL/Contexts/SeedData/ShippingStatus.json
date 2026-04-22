@@ -1,0 +1,25 @@
+[
+  {
+    "Name": "Placed",
+    "Description": "The order has been placed but not yet processed."
+  },
+  {
+    "Name": "Shipped",
+    "Description": "The order has been shipped and is on its way to the destination."
+  },
+  {
+    "Name": "Out for Delivery",
+    "Description": "The order is out for delivery and will arrive soon."
+  },
+  {
+    "Name": "Delivered",
+    "Description": "The order has been delivered to the recipient."
+  },
+  {
+    "Name": "Canceled",
+    "Description": "The order has been canceled and will not be processed."
+  }
+]
+
+
+

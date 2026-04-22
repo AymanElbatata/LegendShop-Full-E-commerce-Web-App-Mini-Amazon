@@ -1,0 +1,419 @@
+﻿@model List<SubCategoryTBL_VM>
+
+@{
+    ViewData["Title"] = "Manage SubCategories";
+}
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Admin > SubCategories</span>
+    </div>
+</div>
+
+<style>
+    .btn-amazon {
+        background: linear-gradient(135deg, #ff9900 0%, #ff8800 100%);
+        color: white;
+        border: none;
+        padding: 8px 20px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+    }
+
+        .btn-amazon:hover {
+            background: linear-gradient(135deg, #ff8800 0%, #ff7700 100%);
+            transform: translateY(-1px);
+            color: white;
+        }
+
+    .subcategory-row {
+        transition: all 0.3s ease;
+    }
+
+        .subcategory-row:hover {
+            background-color: #fff9f0;
+        }
+
+    .form-control:focus, .form-select:focus {
+        border-color: #ff9900;
+        box-shadow: 0 0 0 2px rgba(255,153,0,0.1);
+        background-color: white !important;
+    }
+
+    .card {
+        border-radius: 12px;
+    }
+
+    .table th {
+        font-weight: 600;
+        font-size: 14px;
+    }
+
+    .badge {
+        padding: 6px 12px;
+        font-size: 13px;
+    }
+</style>
+
+<div class="container-fluid px-4 py-4">
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+@*             <h2 class="fw-bold mb-1" style="color: #232f3e;">
+                <i class="fas fa-folder-open me-2"></i>Subcategory Management
+            </h2>
+            <p class="text-muted">Manage your product subcategories</p>
+ *@        </div>
+        <div class="text-end">
+            <span class="badge bg-secondary">Total: @Model.Count subcategories</span>
+        </div>
+    </div>
+
+    <!-- Add Subcategory Card -->
+    <div class="card shadow-sm mb-4 border-0 rounded-3">
+        <div class="card-header bg-white py-3 border-0">
+            <h5 class="mb-0 fw-bold" style="color: #ff9900;">
+                <i class="fas fa-plus-circle me-2"></i>Add New Subcategory
+            </h5>
+        </div>
+        <div class="card-body">
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Select Category <span class="text-danger">*</span></label>
+                    <select id="newCategoryId" class="form-select">
+                        <option value="">-- Select Category --</option>
+                        @foreach (var category in ViewBag.Categories)
+                        {
+                            <option value="@category.ID">@category.Name</option>
+                        }
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label fw-semibold">Subcategory Name <span class="text-danger">*</span></label>
+                    <input type="text" id="newName" class="form-control" placeholder="Enter subcategory name" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Description</label>
+                    <input type="text" id="newDesc" class="form-control" placeholder="Enter description" />
+                </div>
+                <div class="col-md-1 d-flex align-items-end">
+                    <button class="btn btn-amazon w-100" onclick="addSubcategory()">
+                        <i class="fas fa-plus me-2"></i>Add
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subcategories Table -->
+    <div class="card shadow-sm border-0 rounded-3">
+        <div class="card-header bg-white py-3 border-0">
+            <h5 class="mb-0 fw-bold" style="color: #232f3e;">
+                <i class="fas fa-list me-2"></i>All Subcategories
+            </h5>
+        </div>
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-hover mb-0">
+                    <thead style="background-color: #232f3e;">
+                        <tr>
+                            <th class="text-white py-3 ps-3">#</th>
+                            <th class="text-white py-3">Category</th>
+                            <th class="text-white py-3">Subcategory Name</th>
+                            <th class="text-white py-3">Description</th>
+                            <th class="text-white py-3 text-center" width="180">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="subcategoriesTableBody">
+                        @{
+                            int counter = 1;
+                        }
+                        @foreach (var item in Model)
+                        {
+                            <tr id="row_@item.ID" class="subcategory-row">
+                                <td class="ps-3 align-middle">@counter</td>
+                                <td class="align-middle">
+                                    <select class="form-select form-select-sm border-0 bg-light" 
+                                            id="categoryId_@item.ID" 
+                                            style="min-width: 150px;">
+                                        <option value="">-- Select Category --</option>
+                                        @foreach (var category in ViewBag.Categories)
+                                        {
+                                            if (category.ID == item.CategoryTBLId)
+                                            {
+                                                <option value="@category.ID" selected>@category.Name</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@category.ID">@category.Name</option>
+                                            }
+                                        }
+                                    </select>
+                                </td>
+                                <td class="align-middle">
+                                    <input type="text" class="form-control form-control-sm border-0 bg-light"
+                                           id="name_@item.ID"
+                                           value="@item.Name"
+                                           style="min-width: 150px;" />
+                                </td>
+                                <td class="align-middle">
+                                    <input type="text" class="form-control form-control-sm border-0 bg-light"
+                                           id="desc_@item.ID"
+                                           value="@item.Description"
+                                           style="min-width: 200px;" />
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button class="btn btn-sm btn-success me-2" onclick="updateSubcategory(@item.ID)" title="Save changes">
+                                        <i class="fas fa-save me-1"></i>Save
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteSubcategory(@item.ID)" title="Delete subcategory">
+                                        <i class="fas fa-trash me-1"></i>Delete
+                                    </button>
+                                </td>
+                            </tr>
+                            counter++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        // Add Subcategory
+        function addSubcategory() {
+            var categoryId = $("#newCategoryId").val();
+            var name = $("#newName").val().trim();
+            var desc = $("#newDesc").val().trim();
+            
+            if (!categoryId) {
+                showNotification('Please select a category', 'error');
+                return;
+            }
+            
+            if (!name) {
+                showNotification('Please enter subcategory name', 'error');
+                return;
+            }
+            
+            var addBtn = event.target;
+            var originalText = $(addBtn).html();
+            $(addBtn).prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span> Adding...');
+            
+            $.ajax({
+                url: '/SubCategories/AddSubcategory',
+                type: 'POST',
+                data: {
+                    CategoryTBLId: categoryId,
+                    Name: name,
+                    Description: desc
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Get category name for display
+                        var categoryName = $("#newCategoryId option:selected").text();
+                        
+                        // Add new row to table dynamically
+                        var newRow = `
+                            <tr id="row_${response.id}" class="subcategory-row">
+                                <td class="ps-3 align-middle">${$('#subcategoriesTableBody tr').length + 1}</td>
+                                <td class="align-middle">
+                                    <select class="form-select form-select-sm border-0 bg-light" 
+                                            id="categoryId_${response.id}" 
+                                            style="min-width: 150px;">
+                                        ${getAllCategoriesOptions(response.categoryId)}
+                                    </select>
+                                </td>
+                                <td class="align-middle">
+                                    <input type="text" class="form-control form-control-sm border-0 bg-light"
+                                           id="name_${response.id}"
+                                           value="${escapeHtml(name)}"
+                                           style="min-width: 150px;" />
+                                </td>
+                                <td class="align-middle">
+                                    <input type="text" class="form-control form-control-sm border-0 bg-light"
+                                           id="desc_${response.id}"
+                                           value="${escapeHtml(desc)}"
+                                           style="min-width: 200px;" />
+                                </td>
+                                <td class="text-center align-middle">
+                                    <button class="btn btn-sm btn-success me-2" onclick="updateSubcategory(${response.id})">
+                                        <i class="fas fa-save me-1"></i>Save
+                                    </button>
+                                    <button class="btn btn-sm btn-danger" onclick="deleteSubcategory(${response.id})">
+                                        <i class="fas fa-trash me-1"></i>Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        `;
+                        $('#subcategoriesTableBody').append(newRow);
+                        
+                        // Clear inputs
+                        $("#newCategoryId").val('');
+                        $("#newName").val('');
+                        $("#newDesc").val('');
+                        
+                        showNotification('Subcategory added successfully!', 'success');
+                    } else {
+                        showNotification(response.message || 'Add failed', 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Error adding subcategory', 'error');
+                },
+                complete: function() {
+                    $(addBtn).prop('disabled', false).html(originalText);
+                }
+            });
+        }
+        
+        // Update Subcategory
+        function updateSubcategory(id) {
+            var categoryId = $("#categoryId_" + id).val();
+            var name = $("#name_" + id).val().trim();
+            var desc = $("#desc_" + id).val().trim();
+            
+            if (!categoryId) {
+                showNotification('Please select a category', 'error');
+                return;
+            }
+            
+            if (!name) {
+                showNotification('Subcategory name cannot be empty', 'error');
+                return;
+            }
+            
+            var updateBtn = event.target;
+            var originalText = $(updateBtn).html();
+            $(updateBtn).prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span>');
+            
+            $.ajax({
+                url: '/SubCategories/UpdateSubcategory',
+                type: 'POST',
+                data: {
+                    Id: id,
+                    CategoryTBLId: categoryId,
+                    Name: name,
+                    Description: desc
+                },
+                success: function(response) {
+                    if (response.success) {
+                        // Visual feedback - highlight row
+                        var row = $("#row_" + id);
+                        row.css('background-color', '#d4edda');
+                        setTimeout(function() {
+                            row.css('background-color', '');
+                        }, 1000);
+                        showNotification('Subcategory updated successfully!', 'success');
+                    } else {
+                        showNotification(response.message || 'Update failed', 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Error updating subcategory', 'error');
+                },
+                complete: function() {
+                    $(updateBtn).prop('disabled', false).html(originalText);
+                }
+            });
+        }
+        
+        // Delete Subcategory
+        function deleteSubcategory(id) {
+            if (!confirm("Are you sure you want to delete this subcategory? This action cannot be undone.")) return;
+            
+            var deleteBtn = event.target;
+            var originalText = $(deleteBtn).html();
+            $(deleteBtn).prop('disabled', true).html('<span class="spinner-border spinner-border-sm"></span>');
+            
+            $.ajax({
+                url: '/SubCategories/DeleteSubcategory',
+                type: 'POST',
+                data: { id: id },
+                success: function(response) {
+                    if (response.success) {
+                        // Animate row removal
+                        var row = $("#row_" + id);
+                        row.fadeOut(300, function() {
+                            $(this).remove();
+                            // Update row numbers
+                            updateRowNumbers();
+                        });
+                        showNotification('Subcategory deleted successfully!', 'success');
+                    } else {
+                        showNotification(response.message || 'Delete failed', 'error');
+                    }
+                },
+                error: function() {
+                    showNotification('Error deleting subcategory', 'error');
+                },
+                complete: function() {
+                    $(deleteBtn).prop('disabled', false).html(originalText);
+                }
+            });
+        }
+        
+        // Get all categories options for dropdown
+        function getAllCategoriesOptions(selectedId) {
+            var options = '<option value="">-- Select Category --</option>';
+            @foreach (var category in ViewBag.Categories)
+            {
+                <text>
+                if (selectedId == @category.ID) {
+                    options += '<option value="@category.ID" selected>@category.Name</option>'
+                } else {
+                    options += '<option value="@category.ID">@category.Name</option>'
+                }
+                </text>
+            }
+            return options;
+        }
+        
+        // Update row numbers after deletion
+        function updateRowNumbers() {
+            $('#subcategoriesTableBody tr').each(function(index) {
+                $(this).find('td:first').text(index + 1);
+            });
+        }
+        
+        // Show notification
+        function showNotification(message, type) {
+            var notification = $(`
+                <div class="alert alert-${type === 'success' ? 'success' : 'danger'} alert-dismissible fade show position-fixed top-0 end-0 m-3" 
+                     style="z-index: 9999; min-width: 300px; border-radius: 8px;">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} me-2"></i>
+                    ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `);
+            $('body').append(notification);
+            setTimeout(function() {
+                notification.fadeOut(function() {
+                    $(this).remove();
+                });
+            }, 3000);
+        }
+        
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+        
+        // Press Enter to add subcategory
+        $('#newName, #newDesc').keypress(function(e) {
+            if (e.which === 13) {
+                addSubcategory();
+            }
+        });
+    </script>
+}

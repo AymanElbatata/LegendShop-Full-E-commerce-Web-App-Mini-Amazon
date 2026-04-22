@@ -1,0 +1,292 @@
+﻿@model AymanStore.PL.Models.ProductTBL_VM
+
+<style>
+    .current-photo {
+        text-align: center;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 8px;
+        margin-bottom: 15px;
+    }
+
+        .current-photo img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+    .form-group label {
+        font-weight: 600;
+        color: #232f3e;
+    }
+
+    .text-danger {
+        font-size: 12px;
+    }
+
+</style>
+
+<form id="editProductForm" enctype="multipart/form-data">
+    <input type="hidden" asp-for="ID" />
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Main Photo Upload -->
+            <div class="mb-3">
+                <label class="form-label">Main Product Photo</label>
+                @if (!string.IsNullOrEmpty(Model.Image))
+                {
+                    <div class="mb-2 text-center">
+                        <img src="~/Images/Products/@Model.Image" style="max-width: 100%; max-height: 200px; border-radius: 8px;" id="currentMainPhoto">
+                        <p class="text-muted mt-2 small">Current main photo</p>
+                    </div>
+                }
+                <input type="file" class="form-control" id="mainPhoto" name="MainPhoto" accept="image/*" onchange="previewMainPhoto(this)">
+                <div id="mainPhotoPreview" class="mt-2"></div>
+                <small class="text-muted">Upload new main photo (will replace existing)</small>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Product Name *</label>
+                <input type="text" class="form-control" asp-for="Name" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Description</label>
+                <textarea class="form-control" asp-for="Description" rows="3"></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Category</label>
+                <select id="categorySelect" class="form-select" onchange="loadSubCategories()">
+                    <option value="">Select Category</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Sub Category</label>
+                <select asp-for="SubCategoryTBLId" id="subCategorySelect" class="form-select">
+                    <option value="">Select Sub Category</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Manufacturer</label>
+                <select asp-for="ManufacturerTBLId" id="manufacturerSelect" class="form-select">
+                    <option value="">Select Manufacturer</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Country of Origin</label>
+                <select asp-for="CountryTBLPlaceId" id="countrySelect" class="form-select">
+                    <option value="">Select Country</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="mb-3">
+                <label class="form-label">Brand</label>
+                <input type="text" class="form-control" asp-for="Brand">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Model</label>
+                <input type="text" class="form-control" asp-for="Model">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Material</label>
+                <input type="text" class="form-control" asp-for="Material">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Color</label>
+                <input type="text" class="form-control" asp-for="Color">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Weight</label>
+                <input type="text" class="form-control" asp-for="Weight">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Size</label>
+                <input type="text" class="form-control" asp-for="Size">
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Selling Price</label>
+                        <input type="number" class="form-control" asp-for="SellingPrice">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Purchasing Price</label>
+                        <input type="number" class="form-control" asp-for="PurchasingPrice">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" class="form-control" asp-for="Quantity">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Barcode</label>
+                        <input type="text" class="form-control" asp-for="Barcode" disabled>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Valid From</label>
+                <input type="date" class="form-control" asp-for="ValidFrom">
+            </div>
+
+            <div class="form-check mb-3">
+                <input class="form-check-input" type="checkbox" asp-for="IsPublished">
+                <label class="form-check-label">Published (Visible to customers)</label>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-amazon" onclick="saveProductEdit()">Save Changes</button>
+    </div>
+</form>
+
+<script>
+    // Preview main photo
+    function previewMainPhoto(input) {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                $('#mainPhotoPreview').html(`<img src="${e.target.result}" style="max-width: 100%; max-height: 200px; border-radius: 8px; margin-top: 10px;"><p class="text-success mt-2 small">New photo will replace existing</p>`);
+                $('#currentMainPhoto').hide();
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Get the current product's country ID from the model
+    var currentCountryId = '@Model.CountryTBLPlaceId';
+    var currentManufacturerId = '@Model.ManufacturerTBLId';
+    var currentSubCategoryId = '@Model.SubCategoryTBLId';
+
+    // Load categories
+    function loadCategories() {
+        $.ajax({
+            url: '@Url.Action("GetCategories", "Product")',
+            type: 'GET',
+            success: function(categories) {
+                const select = $('#categorySelect');
+                select.empty().append('<option value="">Select Category</option>');
+                categories.forEach(cat => select.append(`<option value="${cat.id}">${cat.name}</option>`));
+
+                // If we have a subcategory, load its parent category
+                if (currentSubCategoryId && currentSubCategoryId !== "") {
+                    loadParentCategory(currentSubCategoryId);
+                }
+            }
+        });
+    }
+
+    function loadParentCategory(subCategoryId) {
+        $.ajax({
+            url: '@Url.Action("GetSubCategory", "Product")',
+            type: 'GET',
+            data: { id: subCategoryId },
+            success: function(subCat) {
+                if (subCat && subCat.categoryId) {
+                    $('#categorySelect').val(subCat.categoryId);
+                    loadSubCategories();
+                    // After subcategories load, set the selected subcategory
+                    setTimeout(() => {
+                        $('#subCategorySelect').val(currentSubCategoryId);
+                    }, 300);
+                }
+            }
+        });
+    }
+
+    function loadSubCategories() {
+        const categoryId = $('#categorySelect').val();
+        if (categoryId) {
+            $.ajax({
+                url: '@Url.Action("GetSubCategories", "Product")',
+                type: 'GET',
+                data: { categoryId: categoryId },
+                success: function(subCategories) {
+                    const select = $('#subCategorySelect');
+                    select.empty().append('<option value="">Select Sub Category</option>');
+                    subCategories.forEach(sub => select.append(`<option value="${sub.id}">${sub.name}</option>`));
+
+                    // Set the selected subcategory if we have one
+                    if (currentSubCategoryId && currentSubCategoryId !== "") {
+                        select.val(currentSubCategoryId);
+                    }
+                }
+            });
+        } else {
+            $('#subCategorySelect').empty().append('<option value="">Select Sub Category</option>');
+        }
+    }
+
+    // Load manufacturers with selected value
+    function loadManufacturers() {
+        $.ajax({
+            url: '@Url.Action("GetManufacturers", "Product")',
+            type: 'GET',
+            success: function(manufacturers) {
+                const select = $('#manufacturerSelect');
+                select.empty().append('<option value="">Select Manufacturer</option>');
+                manufacturers.forEach(m => select.append(`<option value="${m.id}">${m.name}</option>`));
+
+                // Set the selected manufacturer
+                if (currentManufacturerId && currentManufacturerId !== "") {
+                    select.val(currentManufacturerId);
+                }
+            }
+        });
+    }
+
+    // Load countries with selected value
+    function loadCountries() {
+        $.ajax({
+            url: '@Url.Action("GetCountries", "Product")',
+            type: 'GET',
+            success: function(countries) {
+                const select = $('#countrySelect');
+                select.empty().append('<option value="">Select Country</option>');
+                countries.forEach(c => select.append(`<option value="${c.id}">${c.name}</option>`));
+
+                // Set the selected country - THIS IS THE KEY PART
+                if (currentCountryId && currentCountryId !== "" && currentCountryId !== "null") {
+                    select.val(currentCountryId);
+                    console.log("Selected country set to:", currentCountryId);
+                }
+            },
+            error: function() {
+                console.error("Error loading countries");
+            }
+        });
+    }
+
+    // Initialize all dropdowns
+    $(document).ready(function() {
+        console.log("Loading dropdowns with current country ID:", currentCountryId);
+        loadCategories();
+        loadManufacturers();
+        loadCountries();
+    });
+</script>

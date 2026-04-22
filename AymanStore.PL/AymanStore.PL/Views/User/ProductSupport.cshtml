@@ -1,0 +1,227 @@
+﻿@model List<ContactForProductErrorTBL_VM>
+
+@{
+    ViewData["Title"] = "Product Support";
+}
+
+<style>
+    .page-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .updated {
+        text-align: center;
+        color: #777;
+        margin-bottom: 30px;
+    }
+
+    .highlight {
+        background: #f1f7ff;
+        padding: 15px;
+        border-left: 4px solid black;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        color: #444;
+    }
+
+    /* CARD */
+    .complaint-card {
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background: #fafafa;
+        transition: 0.2s ease;
+    }
+
+        .complaint-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+        }
+
+    /* PRODUCT */
+    .product-section {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .product-image img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background: #fff;
+    }
+
+    .product-name {
+        font-size: 15px;
+        color: #222;
+        margin-bottom: 5px;
+    }
+
+    .product-barcode {
+        font-size: 13px;
+        color: #666;
+    }
+
+        .product-barcode span {
+            font-weight: 600;
+            color: #0073e6;
+        }
+
+    /* USER */
+    .user-section {
+        background: #fff;
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+        border-left: 4px solid #28a745;
+        font-size: 13px;
+        color: #444;
+    }
+
+    /* MESSAGE */
+    .complaint-box {
+        background: #fff;
+        padding: 10px;
+        border-radius: 6px;
+        border-left: 4px solid #0073e6;
+        margin-top: 10px;
+    }
+
+        .complaint-box p {
+            margin: 5px 0 0 0;
+            color: #444;
+            line-height: 1.6;
+        }
+
+    /* REPLY */
+    .reply-done {
+        margin-top: 10px;
+        background: #eaf7ea;
+        padding: 12px;
+        border-left: 4px solid #28a745;
+        border-radius: 6px;
+    }
+
+        .reply-done p {
+            margin: 6px 0;
+            color: #333;
+        }
+
+    /* WAITING */
+    .reply-waiting {
+        margin-top: 10px;
+        background: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 10px;
+        border-radius: 6px;
+        color: #856404;
+        font-size: 13px;
+    }
+
+    /* FOOTER */
+    .complaint-footer {
+        display: flex;
+        justify-content: space-between;
+        color: #777;
+        font-size: 12px;
+        margin-top: 10px;
+    }
+</style>
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>User > Product Support</span>
+    </div>
+</div>
+
+<div class="page-container">
+
+    <div class="updated">Track your complaints and supplier responses</div>
+
+@*     <div class="highlight">
+        Here you can view all your submitted issues and supplier replies.
+    </div> *@
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="highlight">
+            No messages found.
+        </div>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <div class="complaint-card">
+
+                <!-- PRODUCT -->
+                <div class="product-section">
+                    <div class="product-image">
+                        <a asp-controller="Home" asp-action="ProductDetail" asp-route-ProductId="@item.ProductTBL.ID">
+                            <img src="~/Images/Products/@item.ProductTBL.Image" alt="Product Image" />
+                        </a>
+                    </div>
+
+                    <div>
+                        <div class="product-name">
+                            <strong>@item.ProductTBL?.Name</strong>
+                        </div>
+
+                        <div class="product-barcode">
+                            Barcode:
+                            <span>@item.ProductTBL?.Barcode</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MESSAGE -->
+                <div class="complaint-box">
+                    <strong>Your Message:</strong>
+                    <p>@item.Message</p>
+                </div>
+
+                <!-- REPLY -->
+                @if (!string.IsNullOrEmpty(item.MessageReplyToClient))
+                {
+                    <div class="reply-done">
+                        <strong>Supplier Reply:</strong>
+                        <p>@item.MessageReplyToClient</p>
+                    </div>
+                }
+                else
+                {
+                    <div class="reply-waiting">
+                        ⏳ Waiting for supplier response
+                    </div>
+                }
+
+                <!-- FOOTER -->
+                <div class="complaint-footer">
+                    <small>
+                        Submitted: @item.CreationDate?.ToString("yyyy-MM-dd HH:mm")
+                    </small>
+
+                    @if (!string.IsNullOrEmpty(item.MessageReplyToClient))
+                    {
+                        <small>
+                            Replied: @item.LastUpdateDate?.ToString("yyyy-MM-dd HH:mm")
+                        </small>
+                    }
+                </div>
+
+            </div>
+        }
+    }
+
+</div>

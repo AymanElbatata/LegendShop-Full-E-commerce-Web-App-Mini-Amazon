@@ -1,0 +1,329 @@
+﻿@model OrderDetailTBL_VM
+
+@{
+    ViewData["Title"] = "Track Order";
+    int step = Model?.OrderTBL?.ShippingStatusTBL?.ID ?? 1;
+    bool isCanceled = Model?.OrderTBL?.ShippingStatusTBL?.ID == 5;
+}
+
+<style>
+    body {
+        background: #f3f3f3;
+        font-family: Arial, sans-serif;
+    }
+
+    .track-container {
+        display: flex;
+        justify-content: center;
+        padding: 30px 15px;
+        min-height: 70vh;
+    }
+
+    .track-card {
+        background: #fff;
+        border-radius: 8px;
+        max-width: 750px;
+        width: 100%;
+        padding: 25px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .tracking-header {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 15px;
+        color: #333;
+    }
+
+    .tracking-code {
+        font-size: 14px;
+        margin-bottom: 25px;
+        color: #555;
+    }
+
+    /* Timeline */
+    .timeline {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin: 30px 0;
+        flex-wrap: nowrap;
+    }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            right: 15px;
+            height: 2px;
+            background: #ddd;
+            z-index: 1;
+            transform: translateY(-50%);
+        }
+
+    .step {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        flex: 1;
+        min-width: 60px;
+    }
+
+    /* FIX: Perfect centering for checkmark on all devices */
+    .step-circle {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        background: #ddd;
+        margin: 0 auto 8px auto;
+        /* FIX: Use flexbox instead of line-height for perfect centering */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #fff;
+        font-weight: bold;
+        font-size: 16px;
+        /* Remove line-height which caused misalignment */
+        line-height: 1;
+    }
+
+    .step.completed .step-circle {
+        background: #4caf50;
+    }
+
+    .step.active .step-circle {
+        background: #ff9900;
+    }
+
+    .step-label {
+        font-size: 13px;
+        color: #555;
+    }
+
+    .order-info {
+        margin-top: 25px;
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+        text-align: left;
+    }
+
+        .order-info p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #333;
+        }
+
+    .canceled-order {
+        text-align: center;
+        background: #fff3f3;
+        color: #d9534f;
+        padding: 25px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 16px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .no-order {
+        text-align: center;
+        margin-top: 50px;
+        background: #fff;
+        padding: 25px;
+        border-radius: 8px;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .track-form .form-control {
+        padding: 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+
+    .btn-track {
+        width: 100%;
+        background: #ff9900;
+        border: none;
+        border-radius: 4px;
+        padding: 10px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #000;
+    }
+
+        .btn-track:hover {
+            background: #e68a00;
+        }
+
+    /* Responsive - Tablet & Mobile */
+    @@media (max-width: 991px) {
+        .timeline
+
+    {
+        flex-direction: column;
+        align-items: flex-start;
+        position: relative;
+    }
+
+    .timeline::before {
+        top: 0;
+        left: 15px;
+        width: 2px;
+        height: 100%;
+        right: auto;
+        transform: none;
+    }
+
+    .step {
+        flex: none;
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+        text-align: left;
+        width: 100%;
+    }
+
+    .step-circle {
+        margin: 0 12px 0 0;
+        flex-shrink: 0;
+    }
+
+    .step-label {
+        font-size: 13px;
+    }
+
+    }
+
+    @@media (max-width: 576px) {
+        .track-card
+
+    {
+        padding: 15px;
+    }
+
+    .step-circle {
+        width: 32px;
+        height: 32px;
+        font-size: 15px;
+        margin-right: 10px;
+    }
+
+    .step-label {
+        font-size: 12px;
+    }
+
+    .tracking-header {
+        font-size: 16px;
+    }
+
+    .tracking-code {
+        font-size: 13px;
+    }
+
+    .order-info p {
+        font-size: 13px;
+    }
+
+    /* Adjust vertical line position for smaller circles */
+    .timeline::before {
+        left: 16px;
+    }
+
+    }
+
+    /* Extra small devices */
+    @@media (max-width: 380px) {
+        .step-circle
+
+    {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+        margin-right: 8px;
+    }
+
+    .timeline::before {
+        left: 14px;
+    }
+
+    }
+</style>
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Home > Track Order</span>
+    </div>
+
+    @if (isCanceled)
+    {
+        <div class="canceled-order">Order Canceled</div>
+    }
+    else if (Model == null || string.IsNullOrEmpty(Model?.OrderTBL?.TrackingShippingCode))
+    {
+        <div class="no-order">
+            <p>Please enter your tracking code.</p>
+            <form asp-action="TrackingOrder" asp-controller="Home" method="post" class="track-form">
+                <input type="text" name="trackingCode" class="form-control"
+                       minlength="13" maxlength="13"
+                       pattern="[A-Za-z0-9]{13}"
+                       placeholder="EX: TRK123456..." required />
+                <button type="submit" class="btn-track">Track Order</button>
+            </form>
+        </div>
+    }
+    else
+    {
+        <div class="track-container">
+            <div class="track-card">
+                <div class="tracking-header">Track Your Order</div>
+                <div class="tracking-code">Tracking Code: <strong>@Model.OrderTBL?.TrackingShippingCode</strong></div>
+
+                <!-- Timeline -->
+                <div class="timeline">
+                    <div class="step @(step >= 1 ? "completed" : "") @(step == 1 ? "active" : "")">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Order Placed</div>
+                    </div>
+                    <div class="step @(step >= 2 ? "completed" : "") @(step == 2 ? "active" : "")">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Shipped</div>
+                    </div>
+                    <div class="step @(step >= 3 ? "completed" : "") @(step == 3 ? "active" : "")">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Out for Delivery</div>
+                    </div>
+                    <div class="step @(step >= 4 ? "completed" : "") @(step == 4 ? "completed" : "")">
+                        <div class="step-circle">✓</div>
+                        <div class="step-label">Delivered</div>
+                    </div>
+                </div>
+
+                <!-- Order Info -->
+                <div class="order-info">
+                    <p><strong>Status:</strong> @Model.OrderTBL?.ShippingStatusTBL?.Name</p>
+                    <p><strong>Country:</strong> @Model.ShippingCompanyCostTBL?.CountryTBLSendTo?.Name</p>
+                    <p><strong>Shipping Company:</strong> @Model.ShippingCompanyCostTBL?.ShippingCompanyTBL?.Name</p>
+                    <p><strong>Service:</strong> @Model.OrderTBL?.ShippingServiceTBL?.Name</p>
+                    <p><strong>Started:</strong> @(Model.OrderTBL?.DateOfSubmit?.ToString("dd MMM yyyy"))</p>
+                    <p>
+                        <strong>Estimated Delivery:</strong>
+                        @{
+                            int days = 0;
+                            if (!string.IsNullOrEmpty(Model.OrderTBL?.ShippingServiceTBL?.Name))
+                            {
+                                var digits = new string(Model.OrderTBL.ShippingServiceTBL.Name.Where(char.IsDigit).ToArray());
+                                int.TryParse(digits, out days);
+                            }
+                        }
+                        @(Model.OrderTBL?.DateOfSubmit?.AddDays(days).ToString("dd MMM yyyy"))
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+</div>

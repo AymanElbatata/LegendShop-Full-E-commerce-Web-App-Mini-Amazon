@@ -1,0 +1,38 @@
+[
+  {
+    "ShippingCompanyTBLId": 1,
+    "CountryTBLSendFromId": 50,
+    "CountryTBLSendToId": 50,
+    "Cost": 10
+  },
+  {
+    "ShippingCompanyTBLId": 1,
+    "CountryTBLSendFromId": 50,
+    "CountryTBLSendToId": 149,
+    "Cost": 20
+  },
+  {
+    "ShippingCompanyTBLId": 1,
+    "CountryTBLSendFromId": 50,
+    "CountryTBLSendToId": 181,
+    "Cost": 25
+  },
+  {
+    "ShippingCompanyTBLId": 2,
+    "CountryTBLSendFromId": 106,
+    "CountryTBLSendToId": 66,
+    "Cost": 30
+  },
+  {
+    "ShippingCompanyTBLId": 3,
+    "CountryTBLSendFromId": 60,
+    "CountryTBLSendToId": 66,
+    "Cost": 30
+  },
+  {
+    "ShippingCompanyTBLId": 3,
+    "CountryTBLSendFromId": 50,
+    "CountryTBLSendToId": 70,
+    "Cost": 30
+  }
+]

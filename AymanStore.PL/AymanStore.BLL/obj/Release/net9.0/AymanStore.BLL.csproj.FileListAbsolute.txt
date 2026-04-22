@@ -1,0 +1,15 @@
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\bin\Release\net9.0\AymanStore.BLL.deps.json
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\bin\Release\net9.0\AymanStore.BLL.dll
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\bin\Release\net9.0\AymanStore.BLL.pdb
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\bin\Release\net9.0\AymanStore.DAL.dll
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\bin\Release\net9.0\AymanStore.DAL.pdb
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\obj\Release\net9.0\AymanStore.BLL.csproj.AssemblyReference.cache
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\obj\Release\net9.0\AymanStore.BLL.GeneratedMSBuildEditorConfig.editorconfig
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\obj\Release\net9.0\AymanStore.BLL.AssemblyInfoInputs.cache
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\obj\Release\net9.0\AymanStore.BLL.AssemblyInfo.cs
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\obj\Release\net9.0\AymanStore.BLL.csproj.CoreCompileInputs.cache
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\obj\Release\net9.0\AymanSto.DE37AD74.Up2Date
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\obj\Release\net9.0\AymanStore.BLL.dll
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\obj\Release\net9.0\refint\AymanStore.BLL.dll
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\obj\Release\net9.0\AymanStore.BLL.pdb
+D:\AYM Programming\Prog&Files\AymanStore.PL\AymanStore.BLL\obj\Release\net9.0\ref\AymanStore.BLL.dll

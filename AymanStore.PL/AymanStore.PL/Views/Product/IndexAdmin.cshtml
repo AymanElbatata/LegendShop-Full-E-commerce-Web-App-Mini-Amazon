@@ -1,0 +1,14 @@
+﻿@model Products_VM
+
+@{
+    ViewData["Title"] = "Admin Products";
+}
+
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Admin > Products</span>
+    </div>
+</div>
+
+<partial name="_ProductManagement" model="@Model" />

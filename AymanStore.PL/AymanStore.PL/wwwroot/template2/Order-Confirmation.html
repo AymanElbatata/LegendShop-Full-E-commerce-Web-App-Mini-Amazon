@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f6f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            background: #fff;
+            max-width: 600px;
+            margin: 20px auto;
+            border-radius: 8px;
+            padding: 20px;
+        }
+
+        .header {
+            border-bottom: 2px solid #eaeaea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+            .header img {
+                max-height: 80px;
+            }
+
+        .title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #111;
+        }
+
+        .details {
+            font-size: 14px;
+            color: #555;
+        }
+
+        .order-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+            .order-table th, .order-table td {
+                padding: 10px;
+                border-bottom: 1px solid #ddd;
+                text-align: left;
+            }
+
+        .order-summary {
+            margin-top: 20px;
+            font-size: 14px;
+        }
+
+        .footer {
+            font-size: 12px;
+            color: #888;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            background: #ffa41c;
+            color: #111;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <!--<img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fimg.freepik.com%2Fpremium-vector%2Fecommerce-logo-1g01_852937-1100.jpg%3Fsemt%3Dais_hybrid&f=1&nofb=1&ipt=78fc2cae5a79584128d020067692fda99090a9cacd21a1b08b3f301955d08702" alt="Logo">-->
+            <img src="https://legendshop.runasp.net/Images/Main/Logo.png" class="w-50" alt="Logo">
+        </div>
+
+        <p class="title">Hello {{FirstName}},</p>
+        <p class="details">Thank you for shopping with us. Your order has been updates successfully.</p>
+
+        <p><b>Order Number:</b> {{OrderNumber}}</p>
+        <p><b>Order Date:</b> {{OrderDate}}</p>
+
+        <table class="order-table">
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Barcode</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>Shipping</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{OrderItems}}
+            </tbody>
+        </table>
+
+        <div class="order-summary">
+            <p><b>Total:</b>$ {{TotalPrice}}</p>
+        </div>
+
+        <p class="mb-1">
+            <a href="{{OrderLink}}" class="btn">View Your Order</a>
+            ||| 
+            <a href="{{TrackingOrderUrl}}" class="btn">Track Your Order</a>
+        </p>
+
+        <div class="footer">
+            <p>© {{Year}} Legend Shop. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+</html>

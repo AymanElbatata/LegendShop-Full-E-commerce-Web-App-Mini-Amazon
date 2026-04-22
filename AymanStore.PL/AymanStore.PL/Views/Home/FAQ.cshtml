@@ -1,0 +1,167 @@
+﻿@{
+    ViewData["Title"] = "FAQ";
+}
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: #f3f3f3;
+        margin: 0;
+    }
+
+    .page-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .updated {
+        text-align: center;
+        color: #777;
+        margin-bottom: 30px;
+    }
+
+    hr {
+        margin: 30px 0;
+        border: none;
+        border-top: 1px solid #eee;
+    }
+
+    /* FAQ Style */
+    .faq-item {
+        margin-bottom: 15px;
+        border: 1px solid #eee;
+        border-radius: 8px;
+        overflow: hidden;
+        background: #fafafa;
+    }
+
+    .faq-question {
+        padding: 15px;
+        cursor: pointer;
+        font-weight: 500;
+        background: #fff;
+    }
+
+    .faq-answer {
+        padding: 15px;
+        display: none;
+        color: #444;
+        line-height: 1.7;
+        background: #fafafa;
+    }
+
+    /* CSS Only Toggle */
+    .faq-item input {
+        display: none;
+    }
+
+        .faq-item input:checked ~ .faq-answer {
+            display: block;
+        }
+
+    /* footer links (amazon-like footer) */
+    .footer-links {
+        text-align: center;
+        margin-top: 40px;
+        padding-top: 20px;
+        border-top: 1px solid #e7e7e7;
+        font-size: 13px;
+    }
+
+        .footer-links a {
+            color: #007185;
+            text-decoration: none;
+            margin: 0 12px;
+        }
+
+            .footer-links a:hover {
+                text-decoration: underline;
+                color: #C7511F;
+            }
+
+</style>
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Home > FAQ</span>
+    </div>
+</div>
+
+<div class="page-container">
+
+    <div class="updated">Last updated: September 2025</div>
+
+    <hr />
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+        <label class="faq-question" for="q1">How do I create an account?</label>
+        <input type="checkbox" id="q1">
+        <div class="faq-answer">
+            Click on the Sign Up button, fill in your details, and verify your email address to activate your account.
+        </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+        <label class="faq-question" for="q2">How do I place an order?</label>
+        <input type="checkbox" id="q2">
+        <div class="faq-answer">
+            Browse products, add them to your cart, then proceed to checkout. Orders are confirmed manually in our system.
+        </div>
+    </div>
+
+    <!-- FAQ 3 -->
+    <div class="faq-item">
+        <label class="faq-question" for="q3">Do you support online payments?</label>
+        <input type="checkbox" id="q3">
+        <div class="faq-answer">
+            No. Payments are handled upon request after order confirmation by our team.
+        </div>
+    </div>
+
+    <!-- FAQ 4 -->
+    <div class="faq-item">
+        <label class="faq-question" for="q4">How can I track my order?</label>
+        <input type="checkbox" id="q4">
+        <div class="faq-answer">
+            You can track your order status from your account dashboard under "My Orders".
+        </div>
+    </div>
+
+    <!-- FAQ 5 -->
+    <div class="faq-item">
+        <label class="faq-question" for="q5">Can I return a product?</label>
+        <input type="checkbox" id="q5">
+        <div class="faq-answer">
+            Yes, returns are allowed within 14 days according to our Returns Policy.
+        </div>
+    </div>
+
+    <!-- FAQ 6 -->
+    <div class="faq-item">
+        <label class="faq-question" for="q6">Why do I need to verify my email?</label>
+        <input type="checkbox" id="q6">
+        <div class="faq-answer">
+            Email verification is required to activate your account and ensure security of our platform.
+        </div>
+    </div>
+
+    <div class="footer-links">
+        <a asp-controller="Home" asp-action="ConditionsofUse">Conditions of Use</a> |
+        <a asp-controller="Home" asp-action="PrivacyPolicy">Privacy Policy</a> |
+        <a asp-controller="Home" asp-action="PrivacyNotice">Privacy Notice</a> |
+        <a asp-controller="Home" asp-action="ReturnPolicy">Return Policy</a> |
+        <a asp-controller="Home" asp-action="HelpPage">Help Center</a>
+    </div>
+
+</div>

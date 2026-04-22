@@ -1,0 +1,170 @@
+﻿@{
+    ViewData["Title"] = "Shipping & Returns";
+}
+
+<style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background: #f3f3f3;
+        margin: 0;
+    }
+
+    .page-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .updated {
+        text-align: center;
+        color: #777;
+        margin-bottom: 30px;
+    }
+
+    h3 {
+        margin-top: 25px;
+        color: #222;
+    }
+
+    .p55 {
+        line-height: 1.8;
+        color: #444;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+
+    li {
+        margin-bottom: 8px;
+    }
+
+    hr {
+        margin: 30px 0;
+        border: none;
+        border-top: 1px solid #eee;
+    }
+
+    .highlight {
+        background: #f1f7ff;
+        padding: 15px;
+        border-left: 4px solid #0073e6;
+        border-radius: 6px;
+        margin: 15px 0;
+    }
+
+    .warning {
+        background: #fff8e6;
+        border-left: 4px solid #ffb300;
+    }
+
+    .footer-links {
+        text-align: center;
+        margin-top: 40px;
+    }
+
+        .footer-links a {
+            margin: 0 10px;
+            color: black;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+            .footer-links a:hover {
+                text-decoration: underline;
+            }
+</style>
+
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Home > Shipping & Returns</span>
+    </div>
+</div>
+
+<div class="page-container">
+
+    <div class="updated">Everything you need to know about delivery and returns</div>
+
+    <hr />
+
+    <div class="highlight">
+        We aim to provide fast, reliable, and transparent shipping and return services for all customers.
+    </div>
+
+    <h3>1. Shipping Information</h3>
+    <p class="p55">
+        Orders are processed after confirmation. Delivery time depends on your location and product availability.
+    </p>
+
+    <ul>
+        <li>Processing time: 1–3 business days</li>
+        <li>Delivery time: 3–7 business days (may vary)</li>
+        <li>You will be notified once your order is shipped</li>
+    </ul>
+
+    <h3>2. Shipping Methods</h3>
+    <p class="p55">
+        We work with reliable delivery partners to ensure safe and timely delivery of your orders.
+    </p>
+
+    <ul>
+        <li>Standard delivery</li>
+        <li>Express delivery (if available)</li>
+    </ul>
+
+    <h3>3. Shipping Costs</h3>
+    <p class="p55">
+        Shipping fees may vary depending on your location and order size. Any applicable fees will be shown before order confirmation.
+    </p>
+
+    <div class="highlight warning">
+        ⚠ Shipping fees are non-refundable unless the issue is caused by our error.
+    </div>
+
+    <h3>4. Order Tracking</h3>
+    <p class="p55">
+        Once your order is shipped, you will receive tracking details to monitor your delivery status.
+    </p>
+
+    <h3>5. Returns Policy</h3>
+    <p class="p55">
+        You may return eligible items within 14 days of delivery under the following conditions:
+    </p>
+
+    <ul>
+        <li>Item must be unused and in original condition</li>
+        <li>Original packaging must be included</li>
+        <li>Proof of purchase is required</li>
+    </ul>
+
+    <h3>6. Refunds</h3>
+    <p class="p55">
+        After receiving and inspecting your return, refunds will be processed within 7–10 business days if approved.
+    </p>
+
+    <h3>7. Non-Returnable Items</h3>
+    <ul>
+        <li>Digital products</li>
+        <li>Gift cards</li>
+        <li>Customized items</li>
+    </ul>
+
+    <h3>8. Contact Support</h3>
+    <div class="highlight">
+        If you have any questions about shipping or returns, please contact our support team.
+        <br /><br />
+        <strong>Write us:</strong> <a asp-controller="Home" asp-action="ContactUs">Contact Us</a>
+        
+    </div>
+
+
+</div>

@@ -1,0 +1,443 @@
+﻿@model AymanStore.PL.Models.CheckOut_VM
+
+@{
+    ViewData["Title"] = "CheckOut";
+}
+
+<style>
+    .cart-empty-alert {
+        background-color: #fff;
+        color: #111;
+        padding: 20px;
+        border: 1px solid #ddd;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        border-radius: 8px;
+    }
+
+    .cart-empty-alert p {
+        margin: 0;
+        font-size: 16px;
+    }
+
+    .text-danger.small {
+        font-size: 13px;
+        color: #c40000;
+        margin-top: 3px;
+        display: block;
+    }
+
+    /* Validation Summary */
+    .validation-summary {
+        color: #c40000;
+        background-color: #ffdfdf;
+        padding: 10px;
+        border-radius: 3px;
+        margin-bottom: 15px;
+        font-size: 13px;
+    }
+
+    .validation-summary ul {
+        margin-left: 15px;
+        margin-bottom: 0;
+    }
+
+    .container2 {
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        text-align: left;
+        max-width: 600px;
+        width: 100%;
+        margin: auto;
+        background-color: white;
+    }
+
+    /* Spinner Overlay */
+    .spinnerOverlaySubmitForm {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    /* Form field focus styles */
+    .form-control:focus {
+        border-color: #ff9900;
+        box-shadow: 0 0 0 0.2rem rgba(255, 153, 0, 0.25);
+    }
+
+    .form-control.is-invalid:focus {
+        border-color: #c40000;
+        box-shadow: 0 0 0 0.2rem rgba(196, 0, 0, 0.25);
+    }
+
+    .form-control.is-valid:focus {
+        border-color: #28a745;
+        box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+    }
+
+    /* Order summary section */
+    .order-summary {
+        background-color: #f8f9fa;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 20px;
+        border: 1px solid #e9ecef;
+    }
+
+    .order-summary h4 {
+        margin-bottom: 15px;
+        color: #0F1111;
+    }
+
+    /* Responsive design */
+    @@media (max-width: 768px) {
+        .container2 {
+            padding: 20px;
+            margin: 10px;
+            width: auto;
+        }
+
+        .btn-lg {
+            font-size: 16px;
+            padding: 12px;
+        }
+
+        .form-group mb-3 {
+            margin-bottom: 15px;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .container2 {
+            padding: 15px;
+        }
+
+        h4.section-title {
+            font-size: 18px;
+        }
+    }
+
+    /* Success/Error message styles */
+    .alert-success {
+        background-color: #d4edda;
+        border-color: #c3e6cb;
+        color: #155724;
+        padding: 12px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+
+    .alert-danger {
+        background-color: #f8d7da;
+        border-color: #f5c6cb;
+        color: #721c24;
+        padding: 12px;
+        border-radius: 4px;
+        margin-bottom: 20px;
+    }
+</style>
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>User > CheckOut</span>
+    </div>
+</div>
+
+<div class="container2 my-4">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert-success text-center">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert-danger text-center">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+
+    @if (Model.OrderTBL_VM == null)
+    {
+        <div class="cart-empty-alert">
+            <p>Your Order is empty.</p>
+            <a asp-controller="Home" asp-action="Index" class="btn btn-primary mt-3">Continue Shopping</a>
+        </div>
+    }
+    else
+    {
+        <form id="checkoutForm" asp-action="CheckOutOrder" asp-controller="User" method="post" novalidate="novalidate">
+            @Html.AntiForgeryToken()
+            
+            <div id="validationSummary" class="validation-summary" style="display:none;"></div>
+            <div asp-validation-summary="ModelOnly" class="validation-summary"></div>
+
+            <!-- Order Summary Section -->
+            <div class="order-summary mb-4">
+                <h4>Order Summary</h4>
+                <p><strong>Order Code:</strong> @Model.OrderTBL_VM.HashCode</p>
+                <p><strong>Total Items:</strong> @Model.TotalItemsOfOrder</p>
+                <p><strong>Total Cost:</strong> @Model.TotalAmountOfOrder $</p>
+            </div>
+
+            <!-- Hidden fields -->
+            <input type="hidden" asp-for="@Model.OrderTBL_VM.ID" />
+            <input type="hidden" asp-for="@Model.OrderTBL_VM.HashCode" />
+            <input type="hidden" asp-for="@Model.OrderTBL_VM.TotalAmount" />
+            <input type="hidden" asp-for="@Model.OrderTBL_VM.CountryTBLId" />
+
+            <!-- Country (Display Only) -->
+            <div class="form-group mb-3">
+                <label for="CountryDisplay">Country</label>
+                <input type="text" class="form-control" id="CountryDisplay" 
+                       value="@Model.CountryTBL_VM?.FirstOrDefault(c => c.ID == Model.OrderTBL_VM.CountryTBLId)?.Name" 
+                       disabled readonly />
+                <small class="text-muted">Country is based on your delivery address</small>
+            </div>
+
+            <!-- Shipping Service -->
+            <div class="form-group mb-3">
+                <label for="OrderTBL_VM_ShippingServiceTBLId">Shipping Service *</label>
+                <select asp-for="@Model.OrderTBL_VM.ShippingServiceTBLId" class="form-control" id="OrderTBL_VM_ShippingServiceTBLId"
+                        asp-items="@(new SelectList(Model.ShippingServiceTBL_VM, "ID", "DisplayText"))">
+                    <option value="">-- Select Shipping Service --</option>
+                </select>
+                <span asp-validation-for="@Model.OrderTBL_VM.ShippingServiceTBLId" class="text-danger small"></span>
+                <small class="text-muted">Choose your preferred delivery method</small>
+            </div>
+
+            <!-- Full Name -->
+            <div class="form-group mb-3">
+                <label for="OrderTBL_VM_ClientName">Full Name *</label>
+                <input asp-for="@Model.OrderTBL_VM.ClientName" class="form-control" id="OrderTBL_VM_ClientName"
+                       placeholder="Enter your full name" 
+                       maxlength="100" />
+                <span asp-validation-for="@Model.OrderTBL_VM.ClientName" class="text-danger small"></span>
+            </div>
+
+            <!-- Email -->
+            <div class="form-group mb-3">
+                <label for="OrderTBL_VM_ClientEmail">Email Address *</label>
+                <input asp-for="@Model.OrderTBL_VM.ClientEmail" class="form-control" id="OrderTBL_VM_ClientEmail"
+                       type="email" 
+                       placeholder="you@example.com" 
+                       maxlength="150" />
+                <span asp-validation-for="@Model.OrderTBL_VM.ClientEmail" class="text-danger small"></span>
+                <small class="text-muted">We'll send order confirmation to this email</small>
+            </div>
+
+            <!-- Phone Numbers -->
+            <div class="form-group mb-3">
+                <label for="OrderTBL_VM_ClientPhones">Phone Numbers *</label>
+                <input asp-for="@Model.OrderTBL_VM.ClientPhones" class="form-control" id="OrderTBL_VM_ClientPhones"
+                       placeholder="+1234567890 or +1234567890 / +9876543210" 
+                       maxlength="200" />
+                <span asp-validation-for="@Model.OrderTBL_VM.ClientPhones" class="text-danger small"></span>
+                <small class="text-muted">Format: +1234567890 or multiple numbers separated by / or -</small>
+            </div>
+
+            <!-- Address -->
+            <div class="form-group mb-3">
+                <label for="OrderTBL_VM_ClientAddress">Delivery Address *</label>
+                <textarea asp-for="@Model.OrderTBL_VM.ClientAddress" class="form-control" id="OrderTBL_VM_ClientAddress"
+                          rows="3" 
+                          placeholder="Street address, apartment, city, postal code"
+                          maxlength="500"></textarea>
+                <span asp-validation-for="@Model.OrderTBL_VM.ClientAddress" class="text-danger small"></span>
+            </div>
+
+            <!-- Additional Notes (Optional) -->
+            <div class="form-group mb-3">
+                <label for="OrderTBL_VM_Notes">Additional Notes (Optional)</label>
+                <textarea asp-for="@Model.OrderTBL_VM.ClientNotes" class="form-control" id="OrderTBL_VM_Notes"
+                          rows="2" 
+                          placeholder="Special delivery instructions, gate code, etc."
+                          maxlength="500"></textarea>
+                <small class="text-muted">Any special instructions for delivery</small>
+            </div>
+
+            <!-- Place Order Button -->
+            <div class="checkout-section">
+                <button type="submit" id="CheckOutOrderBTN" class="btn btn-warning btn-lg w-100 mt-3">
+                    <i class="fas fa-check-circle"></i> Place Your Order
+                </button>
+                <p class="text-muted small text-center mt-3">
+                    <i class="fas fa-lock"></i> Secure transaction
+                </p>
+            </div>
+        </form>
+    }
+
+    <!-- Spinner (hidden by default) -->
+    <div id="spinnerOverlay" class="spinnerOverlaySubmitForm" style="display:none">
+        <div class="spinner-border text-light" role="status" style="width: 3rem; height: 3rem;">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="text-white mt-3">Processing your order... Please wait.</p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        $(document).ready(function() {
+            // Clear validation errors on input
+            $('.form-control').on('input change', function() {
+                clearError(this);
+                hideValidationSummary();
+            });
+        });
+
+        function hideValidationSummary() {
+            $('#validationSummary').hide();
+        }
+
+        function showValidationSummary(messages) {
+            let summaryDiv = $('#validationSummary');
+            if (messages.length > 0) {
+                let errorList = '<ul>';
+                messages.forEach(function(msg) {
+                    errorList += '<li>' + msg + '</li>';
+                });
+                errorList += '</ul>';
+                summaryDiv.html(errorList);
+                summaryDiv.show();
+            }
+        }
+
+        function validateForm() {
+            let isValid = true;
+            let errorMessages = [];
+
+            // Get form field values
+            let shippingService = $('#OrderTBL_VM_ShippingServiceTBLId').val();
+            let clientName = $('#OrderTBL_VM_ClientName').val().trim();
+            let clientEmail = $('#OrderTBL_VM_ClientEmail').val().trim();
+            let clientPhones = $('#OrderTBL_VM_ClientPhones').val().trim();
+            let clientAddress = $('#OrderTBL_VM_ClientAddress').val().trim();
+
+            // Validate Shipping Service
+            if (!shippingService) {
+                isValid = false;
+                showError($('#OrderTBL_VM_ShippingServiceTBLId')[0], "Please select a shipping service");
+                errorMessages.push("Shipping service is required");
+            } else {
+                clearError($('#OrderTBL_VM_ShippingServiceTBLId')[0]);
+            }
+
+            // Validate Name
+            if (!clientName) {
+                isValid = false;
+                showError($('#OrderTBL_VM_ClientName')[0], "Full name is required");
+                errorMessages.push("Full name is required");
+            } else if (clientName.length < 2) {
+                isValid = false;
+                showError($('#OrderTBL_VM_ClientName')[0], "Name must be at least 2 characters");
+                errorMessages.push("Name must be at least 2 characters");
+            } else {
+                clearError($('#OrderTBL_VM_ClientName')[0]);
+            }
+
+            // Validate Email
+            let emailRegex = /^[a-zA-Z0-9._%+-]+@@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (!clientEmail) {
+                isValid = false;
+                showError($('#OrderTBL_VM_ClientEmail')[0], "Email address is required");
+                errorMessages.push("Email address is required");
+            } else if (!emailRegex.test(clientEmail)) {
+                isValid = false;
+                showError($('#OrderTBL_VM_ClientEmail')[0], "Please enter a valid email address (e.g., name@example.com)");
+                errorMessages.push("Invalid email format");
+            } else {
+                clearError($('#OrderTBL_VM_ClientEmail')[0]);
+            }
+
+            // Validate Phone Numbers
+            let phoneRegex = /^\+?\d{6,15}(\s*[\/\-]\s*\+?\d{6,15})*$/;
+            if (!clientPhones) {
+                isValid = false;
+                showError($('#OrderTBL_VM_ClientPhones')[0], "Phone number is required");
+                errorMessages.push("Phone number is required");
+            } else if (!phoneRegex.test(clientPhones)) {
+                isValid = false;
+                showError($('#OrderTBL_VM_ClientPhones')[0], "Enter a valid phone number format: +1234567890 or +1234567890/+9876543210");
+                errorMessages.push("Invalid phone number format");
+            } else {
+                clearError($('#OrderTBL_VM_ClientPhones')[0]);
+            }
+
+            // Validate Address
+            if (!clientAddress) {
+                isValid = false;
+                showError($('#OrderTBL_VM_ClientAddress')[0], "Delivery address is required");
+                errorMessages.push("Delivery address is required");
+            } else if (clientAddress.length < 10) {
+                isValid = false;
+                showError($('#OrderTBL_VM_ClientAddress')[0], "Please enter a complete address (minimum 10 characters)");
+                errorMessages.push("Address is too short (minimum 10 characters)");
+            } else {
+                clearError($('#OrderTBL_VM_ClientAddress')[0]);
+            }
+
+            // Show validation summary if there are errors
+            if (!isValid) {
+                showValidationSummary(errorMessages);
+                // Scroll to top to show errors
+                $('html, body').animate({ scrollTop: 0 }, 'smooth');
+            }
+
+            return isValid;
+        }
+
+        function showError(input, message) {
+            let $input = $(input);
+            let $formGroup = $input.closest('.form-group');
+            let $errorSpan = $formGroup.find('.text-danger.small');
+
+            if ($errorSpan.length) {
+                $errorSpan.text(message);
+            }
+            $input.addClass('is-invalid');
+            $input.removeClass('is-valid');
+        }
+
+        function clearError(input) {
+            let $input = $(input);
+            let $formGroup = $input.closest('.form-group');
+            let $errorSpan = $formGroup.find('.text-danger.small');
+
+            if ($errorSpan.length) {
+                $errorSpan.text('');
+            }
+            $input.removeClass('is-invalid');
+            $input.addClass('is-valid');
+        }
+
+        // Form submit handler
+        $('#checkoutForm').on('submit', function(e) {
+            // Validate the form
+            if (!validateForm()) {
+                e.preventDefault();
+                return false;
+            }
+
+            // If validation passes, disable button and show spinner
+            $('#CheckOutOrderBTN').prop('disabled', true);
+            $('#spinnerOverlay').show();
+
+            return true;
+        });
+    </script>
+}
+

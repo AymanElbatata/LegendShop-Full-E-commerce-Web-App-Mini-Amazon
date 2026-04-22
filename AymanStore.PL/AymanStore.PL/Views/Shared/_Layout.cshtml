@@ -1,0 +1,291 @@
+﻿@using AymanStore.BLL.Interfaces
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims;
+
+@inject IUnitOfWork UnitOfWork;
+
+@{
+    var categories = UnitOfWork.CategoryTBLRepository.GetAllCustomized(
+filter: a => a.IsDeleted == false);
+
+    var Subcategories = UnitOfWork.SubCategoryTBLRepository.GetAllCustomized(
+filter: a => a.IsDeleted == false);
+
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#ff6b8b">
+    <title>@ViewData["Title"] - Legend Shop</title>
+
+
+    <meta name="description" content="Legend shop - online store." />
+    <meta name="keywords" content="ecommerce, online store, asp.net core, shopping, buy online, legendstore" />
+    <meta name="author" content="Legend Shop" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://legendshop.runasp.net/">
+
+    <!-- Open Graph (Facebook & LinkedIn) -->
+    <meta property="og:title" content="Legend shop - Online Store" />
+    <meta property="og:description" content="Shop with us - Legend shop - online store." />
+    <meta property="og:image" content="https://legendshop.runasp.net/images/main/Logo.png" />
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:url" content="https://legendshop.runasp.net/" />
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="ms-icon-144x144.png">
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Legend Shop - Online Store" />
+    <meta name="twitter:description" content="Shop with us - Legend shop - online store." />
+    <meta name="twitter:image" content="~/Images/Main/Logo.png" />
+
+
+    <!-- Favicon  & Manifest -->
+    <link rel="icon" type="image/x-icon" href="~/favicon_io/favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="~/favicon_io/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff6b8b">
+    <link rel="manifest" href="~/favicon_io/site.webmanifest">
+    <meta name="theme-color" content="#ffffff">
+
+
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/AymanStore.PL.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+
+    @RenderSection("Styles", required: false)
+
+
+</head>
+<body>
+    <header class="header">
+        <a asp-controller="Home" asp-action="Index" class="header-logo text-white">
+            <i class="fas fa-shopping-bag"></i> Legend Shop
+        </a>
+
+        <div class="header-search">
+            <select id="CategorySearchMenu">
+                <option value="0" selected="@( (ViewBag.CategorySearchId ?? 0) == 0 )">All</option>
+
+                @foreach (var item in categories)
+                {
+                    <option value="@item.ID"
+                            selected="@( (ViewBag.CategorySearchId ?? 0) == item.ID )">
+                        @item.Name
+                    </option>
+                }
+            </select>
+
+
+            <form asp-controller="Home" asp-action="Search" method="post">
+                <input type="text" value="@(ViewBag.MainSearchWord ?? "")" id="MainSearchWord" name="MainSearchWord" placeholder="Search product..." required />
+                <input type="hidden" id="CategorySearchId" name="CategorySearchId" />
+                <button type="submit" id="CategorySearchMenuBTN"><i class="fas fa-search"></i></button>
+            </form>
+
+        </div>
+
+        <div class="header-nav">
+            @if (UnitOfWork.SignInManager.IsSignedIn(User))
+            {
+                <div class="nav-item dropdown">
+                    <span>Hello, @User.Identity?.Name</span>
+                    <ul class="submenu">
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <li>
+                                <a asp-controller="Admin" asp-action="Index">
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-controller="User" asp-action="Index">
+                                    Account
+                                </a>
+                            </li>
+                        }
+                        else if (User.IsInRole("Supplier"))
+                        {
+                            <li>
+                                <a asp-controller="Supplier" asp-action="Index">
+                                    Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-controller="User" asp-action="Index">
+                                    Account
+                                </a>
+                            </li>
+
+                        }
+                        else
+                        {
+                            <li>
+                                <a asp-controller="User" asp-action="Index">
+                                    Account
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-controller="User" asp-action="ProductSupport">
+                                    @{
+                                        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                                        int ContactForProductErrorCounter = UnitOfWork.ContactForProductErrorTBLRepository.GetAllCustomized(
+                                        filter: a => !a.IsDeleted
+                                        && !a.IsSeenMessageReplyToClient
+                                        && a.SenderUserTBLId == userId).Count(); 
+                                    }
+                                    Product's Complaint (@ContactForProductErrorCounter)
+                                </a>
+                            </li>
+                        }
+                        <li>
+                            <a asp-controller="Account" asp-action="Logout">
+                                Sign Out
+                            </a>
+                        </li>
+                    </ul>
+                    <b>Account & Lists</b>
+                </div>
+            }
+            else
+            {
+                <div class="nav-item">
+                    <span>
+                        <a asp-controller="Account" asp-action="Login" class="text-white text-decoration-none">Hello, sign in</a>
+                    </span>
+                    <b>Account & Lists</b>
+                </div>
+            }
+
+            <div class="nav-item">
+                @* <span>Returns</span> *@ 
+               <span><a asp-controller="Home" asp-action="TrackingOrder" class="text-decoration-none text-white">Tracking</a></span>
+                <b><a asp-controller="User" asp-action="Orders" class="text-decoration-none text-white">& Orders</a></b>
+            </div>
+
+            <div class="nav-item nav-cart">
+                <a asp-controller="User" asp-action="ShoppingCart" class="text-decoration-none text-white"><i class="fas fa-shopping-cart"></i></a>
+                <b><a asp-controller="User" asp-action="ShoppingCart" class="text-decoration-none text-white">Cart</a> </b>
+            </div>
+        </div>
+    </header>
+
+
+    <div class="container">
+
+        <div class="secondary-nav">
+            <a asp-controller="Home" asp-action="Index">
+                <i class="fas fa-bars"></i> All
+            </a>
+
+            @foreach (var category in categories)
+            {
+                <div class="dropdown">
+                    <a asp-controller="Home" asp-action="ProductsByCategoryId" asp-route-CategoryId="@category.ID">
+                        @category.Name
+                    </a>
+
+                    @if (Subcategories != null && Subcategories.Any())
+                    {
+                        <ul class="submenu">
+                            @foreach (var sub in Subcategories.Where(a => a.CategoryTBLId == category.ID))
+                            {
+                                <li>
+                                    <a asp-controller="Home" asp-action="ProductsBySubCategoryId" asp-route-SubCategoryId="@sub.ID">
+                                        @sub.Name
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            }
+        </div>
+        @RenderBody()
+    </div>
+
+    <!-- Footer -->
+    <div class="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        Back to top
+    </div>
+
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>About Us</h3>
+                    <p>Legend Shop is a premium online store offering the latest trends in fashion, electronics, and home goods.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+                        <li><a asp-controller="Home" asp-action="Products">Products</a></li>
+                        <li><a asp-controller="Home" asp-action="Categories">Categories</a></li>
+                        <li><a asp-controller="Home" asp-action="ContactUs">Contact Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Customer Service</h3>
+                    <ul>
+                        <li><a asp-controller="Home" asp-action="FAQ">FAQ</a></li>
+                        <li><a asp-controller="Home" asp-action="Shipping_Returns">Shipping & Returns</a></li>
+                        <li><a asp-controller="Home" asp-action="Size_Guide">Size Guide</a></li>
+                        <li><a asp-controller="Home" asp-action="PrivacyPolicy">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Info</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> Abo-Zahra St, Tanta, Egypt</p>
+                    <p><i class="fas fa-phone"></i> +2 0128 487 8483</p>
+                    <p><i class="fas fa-envelope"></i> ayman_elbatata@mail.ru</p>
+                </div>
+            </div>
+            <div class="copyright">
+@*                 <p>Clients: @totalClients | Suppliers: @totalSuppliers </p>
+ *@                <p>&copy; @DateTime.Now.Year Legend Shop. All rights reserved | <a class="text-white" href="https://payhip.com/b/jFSh4" target="_blank">Buy it</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts (head if needed, otherwise before </body>) -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-W6NE3YGH08'); // Replace with your Google Analytics ID
+    </script>
+
+    <!-- Structured Data (Google Rich Results) -->
+    <script type="application/ld+json">
+        {
+          "@@context": "https://schema.org",
+          "@@type": "WebSite",
+          "name": "LegendShop",
+          "url": "https://legendshop.runasp.net/",
+          "potentialAction": {
+            "@@type": "SearchAction",
+            "target": "https://legendshop.runasp.net/search?query={search_term_string}",
+            "query-input": "required name=search_term_string"
+          }
+        }
+    </script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/GetUserCountry.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

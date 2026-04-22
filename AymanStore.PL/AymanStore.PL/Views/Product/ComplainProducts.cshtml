@@ -1,0 +1,297 @@
+﻿@model List<ContactForProductErrorTBL_VM>
+
+@{
+    ViewData["Title"] = "Product's Complaints";
+}
+
+<style>
+    .page-container {
+        max-width: 900px;
+        margin: 40px auto;
+        background: #fff;
+        padding: 40px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        font-family: 'Roboto', sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .updated {
+        text-align: center;
+        color: #777;
+        margin-bottom: 30px;
+    }
+
+    hr {
+        margin: 30px 0;
+        border: none;
+        border-top: 1px solid #eee;
+    }
+
+    .highlight {
+        background: #f1f7ff;
+        padding: 15px;
+        border-left: 4px solid black;
+        border-radius: 6px;
+        margin: 15px 0;
+        color: #444;
+    }
+
+    /* CARD */
+    .complaint-card {
+        border: 1px solid #eee;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        background: #fafafa;
+        transition: 0.2s ease;
+    }
+
+        .complaint-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+        }
+
+    /* PRODUCT */
+    .product-section {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    .product-image img {
+        width: 70px;
+        height: 70px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background: #fff;
+    }
+
+    .product-name {
+        font-size: 15px;
+        color: #222;
+        margin-bottom: 5px;
+    }
+
+    .product-barcode {
+        font-size: 13px;
+        color: #666;
+    }
+
+        .product-barcode span {
+            font-weight: 600;
+            color: #0073e6;
+        }
+
+    /* USER */
+    .user-section {
+        background: #fff;
+        padding: 10px;
+        border-radius: 6px;
+        margin-top: 10px;
+        border-left: 4px solid #28a745;
+        font-size: 13px;
+        color: #444;
+    }
+
+        .user-section div {
+            margin-bottom: 4px;
+        }
+
+    /* COMPLAINT */
+    .complaint-box {
+        background: #fff;
+        padding: 10px;
+        border-radius: 6px;
+        border-left: 4px solid #0073e6;
+        margin-top: 10px;
+    }
+
+        .complaint-box p {
+            margin: 5px 0 0 0;
+            color: #444;
+            line-height: 1.6;
+        }
+
+    .complaint-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #777;
+        font-size: 12px;
+        margin-top: 8px;
+    }
+
+    .left-date {
+        text-align: left;
+    }
+
+    .right-date {
+        text-align: right;
+    }
+
+    * REPLY BOX */
+    .reply-box {
+        margin-top: 15px;
+    }
+
+    .reply-textarea {
+        width: 100%;
+        min-height: 80px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-size: 14px;
+        resize: vertical;
+        margin-bottom: 10px;
+    }
+
+    .reply-btn {
+        background: orange;
+        border: none;
+        padding: 8px 18px;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+
+        .reply-btn:hover {
+            background: #005bb5;
+        }
+
+    /* SHOW REPLY */
+    .reply-done {
+        margin-top: 15px;
+        background: #eaf7ea;
+        padding: 12px;
+        border-left: 4px solid #28a745;
+        border-radius: 6px;
+    }
+
+        .reply-done p {
+            margin: 6px 0;
+            color: #333;
+        }
+
+    .reply-status {
+        font-size: 12px;
+        color: #28a745;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Home > Product Complaints</span>
+    </div>
+</div>
+
+<div class="page-container">
+
+    <div class="updated">Customer reports about your products</div>
+
+    <hr />
+
+    <div class="highlight">
+        Review complaints with full customer and product details to handle issues efficiently.
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="highlight">
+            No complaints found.
+        </div>
+    }
+    else
+    {
+        foreach (var item in Model)
+        {
+            <div class="complaint-card">
+
+                <!-- PRODUCT SECTION -->
+                <div class="product-section">
+                    <div class="product-image">
+                        <a asp-controller="Home" asp-action="ProductDetail" asp-route-ProductId="@item.ProductTBL.ID">
+                            <img src="~/Images/Products/@item.ProductTBL.Image" alt="Product Image" />
+                        </a>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">
+                            <strong>@item.ProductTBL.Name</strong>
+                        </div>
+
+                        <div class="product-barcode">
+                            Barcode:
+                            <span>@item.ProductTBL.Barcode</span>
+                        </div>
+                    </div>
+
+                </div>
+
+@*                 <!-- USER INFO -->
+                <div class="user-section">
+
+                    <div><strong>User Name:</strong> @item.SenderUserTBL.UserName</div>
+                </div> *@
+
+                <!-- COMPLAINT -->
+                <div class="complaint-box">
+                    <strong>Customer Issue:</strong>
+                    <p>@item.Message</p>
+                </div>
+
+                <!-- SUPPLIER REPLY -->
+                @if (string.IsNullOrEmpty(item.MessageReplyToClient))
+                {
+                    <div class="reply-box">
+                        <form method="post" asp-action="ReplyToComplaint" asp-controller="Product">
+
+                            <input type="hidden" name="complaintId" value="@item.ID" />
+
+                            <textarea name="replyMessage" class="reply-textarea"
+                          placeholder="Write your reply to the customer..." required></textarea>
+
+                            <button type="submit" class="reply-btn">Send Reply</button>
+
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <div class="reply-done">
+                        <strong>Your Reply:</strong>
+                        <p>@item.MessageReplyToClient</p>
+
+                        <div class="reply-status">
+                            ✔ Replied
+                        </div>
+                    </div>
+                }
+
+                <div class="complaint-footer">
+                    <small class="left-date">
+                        Submitted: @item.CreationDate?.ToString("yyyy-MM-dd HH:mm")
+                    </small>
+                    @if (!string.IsNullOrEmpty(item.MessageReplyToClient))
+                    {
+                        <small class="right-date">
+                            Replied: @item.LastUpdateDate?.ToString("yyyy-MM-dd HH:mm")
+                        </small>
+                    }
+                </div>
+
+            </div>
+        }
+    }
+
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+

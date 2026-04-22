@@ -1,0 +1,96 @@
+﻿@model AymanStore.PL.Models.Index_VM
+
+@{
+    ViewData["Title"] = "Products By SubCategoryId";
+}
+
+@if (Model.ProductTBL_VM.Count() > 0)
+{
+    <div class="container">
+        <div class="breadcrumb">
+            <span>Home > @Model.ProductTBL_VM.FirstOrDefault().SubCategoryTBL.CategoryTBL.Name > @Model.ProductTBL_VM.FirstOrDefault().SubCategoryTBL.Name</span>
+        </div>
+
+        <h3>Found @Model.ProductTBL_VM.Count() Product</h3>
+
+        <div class="products-grid">
+            <!-- Product 1 -->
+            @foreach (var item in Model.ProductTBL_VM)
+            {
+
+                <!-- Product 4 -->
+                <div class="product-card">
+                    <a asp-controller="Home" asp-action="ProductDetail" asp-route-ProductId="@item.ID">
+                        <div class="product-image">
+                            <img src="~/Images/Products/@item.Image" alt="Camera">
+                        </div>
+                    </a>
+                    <p class="product-title">@item.Name</p>
+                    <div class="product-rating">
+                        @{
+                            var ratingcollection = Model.ProductRatingTBL_VM
+                            .Where(a => a.ProductTBLId == item.ID)
+                            .ToList();
+
+                            double avgRating = 0;
+                            int totalRatings = ratingcollection.Count;
+
+                            if (totalRatings > 0)
+                            {
+                                avgRating = Math.Round(ratingcollection.Average(r => r.Stars), 1);
+                            }
+
+                            int fullStars = (int)Math.Floor(avgRating);
+                            bool halfStar = (avgRating - fullStars) >= 0.5;
+                        }
+                        <span>
+                            @for (int i = 1; i <= fullStars; i++)
+                            {
+                                <i class="fas fa-star full-star"></i>
+
+                            }
+                            @if (halfStar)
+                            {
+                                <i class="fas fa-star-half-alt half-star"></i>
+
+                            }
+                            @for (int i = fullStars + (halfStar ? 1 : 0); i < 5; i++)
+                            {
+                                <i class="far fa-star empty-star"></i>
+                            }
+                        </span>
+                        <span>@ratingcollection.Count ratings</span>
+
+                    </div>
+                    <div class="product-price">
+                        $@item.SellingPrice
+                    </div>
+                    <div class="product-shipping">
+                        Barcode: @item.Barcode
+                    </div>
+                    <div class="product-shipping">
+                        Category: <b>@item.SubCategoryTBL.CategoryTBL.Name</b>
+                    </div>
+                    <div class="product-shipping">
+                        Sub Category: <b>@item.SubCategoryTBL.Name</b>
+                    </div>
+
+                    @*             <div class="prime-badge">
+                <i class="fas fa-check-circle"></i> Prime
+            </div> *@
+                </div>
+            }
+
+        </div>
+    </div>
+}
+
+else
+{
+    <div class="container">
+        <div class="breadcrumb">
+            <span>Home > @ViewBag.CategoryName > @ViewBag.SubCategoryName</span>
+        </div>
+             <h3 class="mt-3">Found No Products</h3>
+    </div>
+}

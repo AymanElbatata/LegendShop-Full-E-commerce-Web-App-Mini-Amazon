@@ -1,0 +1,182 @@
+﻿@model AymanStore.PL.Models.ReportAbuseProductRating_VM
+
+@{
+    ViewData["Title"] = "Report Abuse Product Review";
+}
+
+<style>
+    .page-container {
+        max-width: 700px;
+        margin: 20px auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        font-family: 'Roboto', sans-serif;
+    }
+
+    h2 {
+        margin-bottom: 20px;
+        color: #222;
+    }
+
+    /* PRODUCT */
+    .product-section {
+        display: flex;
+        gap: 15px;
+        align-items: center;
+        padding-bottom: 5px;
+        border-bottom: 1px solid #eee;
+    }
+
+    .product-image img {
+        width: 80px;
+        height: 80px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #ddd;
+        background: #fff;
+    }
+
+    .product-name {
+        font-size: 16px;
+        font-weight: bold;
+        color: #222;
+    }
+
+    /* REVIEW */
+    .review-box {
+        background: #f9f9f9;
+        border-left: 4px solid #ff9900;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+    }
+
+    .review-header {
+        font-weight: bold;
+        margin-bottom: 8px;
+        color: #333;
+    }
+
+    .review-text {
+        color: #444;
+        line-height: 1.6;
+    }
+
+    /* FORM */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    textarea {
+        width: 100%;
+        min-height: 120px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        font-size: 14px;
+        resize: vertical;
+    }
+
+    textarea:focus {
+        border-color: #ff9900;
+        outline: none;
+    }
+
+    /* BUTTON */
+    .submit-btn {
+        background: #ffd814;
+        border: 1px solid #fcd200;
+        color: #111;
+        padding: 10px 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: 0.2s;
+    }
+
+    .submit-btn:hover {
+        background: #f7ca00;
+    }
+
+    .note {
+        font-size: 13px;
+        color: #777;
+        margin-top: 10px;
+    }
+</style>
+
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>Home > Report Abuse Product Review</span>
+    </div>
+</div>
+
+<div class="page-container">
+
+    <!-- PRODUCT -->
+    <div class="product-section">
+        <div class="product-image">
+            <a asp-controller="Home" asp-action="ProductDetail" asp-route-ProductId="@Model.ProductRatingTBL_VM.ProductTBL.ID">
+                <img src="~/Images/Products/@Model.ProductRatingTBL_VM.ProductTBL.Image" />
+            </a>
+        </div>
+
+        <div>
+            <div class="product-name">
+                @Model.ProductRatingTBL_VM.ProductTBL.Name
+            </div>
+        </div>
+    </div>
+
+    <!-- REVIEW -->
+    <div class="review-box">
+        <div class="review-header">
+            Customer Review:
+        </div>
+
+        <div class="review-text">
+            @Model.ProductRatingTBL_VM.ReviewComment
+        </div>
+    </div>
+
+
+    <!-- FORM -->
+    <form asp-action="ReportAbuseProductRating" asp-controller="Home" method="post">
+
+        @Html.AntiForgeryToken()
+
+        <input type="hidden" asp-for="ProductRatingTBL_VM.ID" />
+        <input type="hidden" asp-for="ProductRatingTBL_VM.ProductTBLId" />
+
+@*         <!-- VALIDATION SUMMARY -->
+        <div asp-validation-summary="All" class="text-danger"></div>
+ *@
+        <div class="form-group">
+            <label><strong>Describe the issue:</strong></label>
+
+            <textarea asp-for="AbuseProductRatingTBL_VM.Message"
+                      placeholder="Explain why this review is inappropriate or misleading...">
+        </textarea>
+
+            <!-- FIELD VALIDATION -->
+            <span asp-validation-for="AbuseProductRatingTBL_VM.Message"
+                  class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="submit-btn">
+            Submit Report
+        </button>
+
+        <div class="note">
+            Your report will be reviewed by our team.
+        </div>
+
+    </form>
+
+</div>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

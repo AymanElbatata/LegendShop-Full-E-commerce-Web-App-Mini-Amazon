@@ -1,0 +1,528 @@
+﻿@model AymanStore.PL.Models.ShoppingCart_VM
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+<style>
+    /* ========== ORIGINAL STYLES (preserved) ========== */
+    .card {
+        border-radius: 12px;
+    }
+
+    .card-header {
+        font-size: 1rem;
+        font-weight: 600;
+    }
+
+    .table th, .table td {
+        vertical-align: middle;
+    }
+
+    /* Star container */
+    .star-rating {
+        display: flex;
+        flex-direction: row;
+        gap: 4px;
+        font-size: 22px;
+    }
+
+    .star {
+        cursor: pointer;
+        color: #ccc;
+        transition: color 0.2s;
+    }
+
+        .star.active {
+            color: #ff9900;
+        }
+
+        .star.hover {
+            color: #ffcc00;
+        }
+
+    .review-section.disabled .star,
+    .review-section.disabled button,
+    .review-section.disabled input,
+    .review-section.disabled textarea {
+        pointer-events: none;
+        opacity: 0.6;
+    }
+
+    /* ========== MOBILE-ONLY RESPONSIVE OVERRIDES (max-width: 767px) ========== */
+    @@media (max-width: 767px) {
+        .container {
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+
+        .card {
+            margin-bottom: 20px !important;
+            border-radius: 10px;
+        }
+
+        .card-body p {
+            margin-bottom: 8px;
+            font-size: 14px;
+            word-break: break-word;
+        }
+
+        .table {
+            display: block;
+            width: 100%;
+            overflow-x: auto;
+        }
+
+            .table thead {
+                display: none;
+            }
+
+            .table tbody, .table tr, .table td {
+                display: block;
+                width: 100%;
+            }
+
+            .table tr {
+                margin-bottom: 20px;
+                border: 1px solid #dee2e6;
+                border-radius: 12px;
+                padding: 12px;
+                background: white;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            }
+
+            .table td {
+                display: flex;
+                justify-content: space-between;
+                align-items: flex-start;
+                padding: 10px 8px;
+                border: none;
+                border-bottom: 1px solid #f0f0f0;
+                text-align: right;
+                gap: 12px;
+            }
+
+                .table td:last-child {
+                    border-bottom: none;
+                }
+
+                .table td::before {
+                    content: attr(data-label);
+                    font-weight: 700;
+                    text-align: left;
+                    flex: 0 0 40%;
+                    color: #495057;
+                    font-size: 13px;
+                }
+
+                .table td:first-child {
+                    flex-direction: column;
+                    align-items: flex-start;
+                }
+
+                    .table td:first-child::before {
+                        content: "Product";
+                        width: 100%;
+                        margin-bottom: 8px;
+                    }
+
+        .d-flex.align-items-center {
+            flex-direction: column;
+            align-items: flex-start !important;
+            gap: 10px;
+            width: 100%;
+        }
+
+            .d-flex.align-items-center img {
+                margin-right: 0 !important;
+                margin-bottom: 8px;
+                width: 100px;
+                height: 100px;
+                object-fit: cover;
+            }
+
+        .supplier-box {
+            width: 100%;
+            text-align: left;
+        }
+
+        .table td:nth-child(2)::before {
+            content: "Barcode";
+        }
+
+        .table td:nth-child(3)::before {
+            content: "Quantity";
+        }
+
+        .table td:nth-child(4)::before {
+            content: "Price";
+        }
+
+        .table td:nth-child(5)::before {
+            content: "Shipping";
+        }
+
+        .table td:nth-child(6)::before {
+            content: "Subtotal";
+        }
+
+        .table td:nth-child(7)::before {
+            content: "Review";
+        }
+
+        .btn-dark.rounded-pill {
+            display: inline-block;
+            width: auto;
+            padding: 10px 20px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 5px 10px;
+        }
+
+        .breadcrumb {
+            font-size: 13px;
+            margin-bottom: 8px;
+        }
+
+        .card-body p strong {
+            display: inline-block;
+            min-width: 120px;
+        }
+    }
+
+    @@media (max-width: 480px) {
+        .card-body p {
+            font-size: 13px;
+        }
+
+        .table td {
+            padding: 8px 6px;
+        }
+
+            .table td::before {
+                font-size: 12px;
+                flex: 0 0 38%;
+            }
+
+        .d-flex.align-items-center img {
+            width: 80px;
+            height: 80px;
+        }
+    }
+
+    @@media (min-width: 768px) {
+        .table {
+            display: table;
+            width: 100%;
+        }
+
+            .table thead {
+                display: table-header-group;
+            }
+
+            .table tbody, .table tr, .table td {
+                display: table-row-group;
+            }
+
+            .table tr {
+                display: table-row;
+                border: none;
+                margin-bottom: 0;
+                padding: 0;
+                box-shadow: none;
+            }
+
+            .table td {
+                display: table-cell;
+                border-bottom: 1px solid #dee2e6;
+                text-align: left;
+                padding: 12px;
+            }
+
+                .table td::before {
+                    display: none;
+                }
+
+        .d-flex.align-items-center {
+            flex-direction: row !important;
+        }
+
+            .d-flex.align-items-center img {
+                margin-right: 12px !important;
+                margin-bottom: 0;
+            }
+    }
+
+    .supplier-box {
+        word-break: break-word;
+    }
+
+    .text-muted.small {
+        font-size: 12px;
+    }
+
+    .img-thumbnail {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+    }
+</style>
+
+<div class="container">
+    <div class="breadcrumb">
+        <span>User > Order Details</span>
+    </div>
+</div>
+
+<div class="container mt-4">
+    <!-- Order Summary -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <strong>Order Summary</strong>
+        </div>
+        <div class="card-body">
+            <p><strong>Order ID:</strong> @Model.OrderTBL_VM.HashCode</p>
+            <p><strong>Order Date:</strong> @(Model.OrderTBL_VM.DateOfSubmit?.ToString("dd MMMM yyyy"))</p>
+            <p><strong>Service:</strong> @Model.OrderTBL_VM.ShippingServiceTBL.Name/@Model.OrderTBL_VM.ShippingServiceTBL.Description</p>
+            <p><strong>Shipping Office:</strong> @Model.OrderDetailTBL_VM?.FirstOrDefault()?.ShippingCompanyCostTBL?.ShippingCompanyTBL?.Name</p>
+            <p><strong>Estimated Delivery:</strong> @(Model.OrderTBL_VM.DateOfSubmit.Value.AddDays(int.Parse(new string(Model.OrderTBL_VM.ShippingServiceTBL.Name.Where(char.IsDigit).ToArray()))).ToString("dd MMMM yyyy"))</p>
+            <p><strong>Tracking Code:</strong> @Model.OrderTBL_VM.TrackingShippingCode</p>
+            <p>
+                <strong>Status:</strong>
+                <span class="badge bg-warning text-dark">@Model.OrderTBL_VM.ShippingStatusTBL.Name</span>
+            </p>
+            <p><strong>Total Amount:</strong> $@Model.OrderTBL_VM.TotalAmount</p>
+        </div>
+    </div>
+
+    <!-- Shipping Address -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <strong>Shipping Address</strong>
+        </div>
+        <div class="card-body">
+            <p>Country: @Model.OrderTBL_VM.CountryTBL.Name</p>
+            <p>Name: @Model.OrderTBL_VM.ClientName</p>
+            <p>Email: @Model.OrderTBL_VM.ClientEmail</p>
+            <p>Phones: @Model.OrderTBL_VM.ClientPhones</p>
+            <p>Address: @Model.OrderTBL_VM.ClientAddress</p>
+            @if (Model.OrderTBL_VM.ClientNotes != null)
+            {
+                <p>Notes: @Model.OrderTBL_VM.ClientNotes</p>
+            }
+        </div>
+    </div>
+
+    <!-- Items in Order -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-light">
+            <strong>Items in this Order</strong>
+        </div>
+        <div class="card-body">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Product</th>
+                        <th>Barcode</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>Shipping</th>
+                        <th>Subtotal</th>
+                        <th>Shipping</th>
+                        <th>Review Product</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.OrderDetailTBL_VM)
+                    {
+                        <tr>
+                            <td data-label="Product">
+                                <div class="d-flex align-items-center">
+                                    <a asp-controller="Home" asp-action="ProductDetail" asp-route-ProductId="@item.ProductTBLId">
+                                        <img src="~/Images/Products/@item.ProductTBL.Image" alt="@item.ProductTBL.Name" class="img-thumbnail me-3" style="width:80px;height:80px;object-fit:cover;" />
+                                    </a>
+                                    <div>
+                                        <div class="fw-bold">@item.ProductTBL.Name</div>
+                                        <div class="text-muted small">@item.ProductTBL.Brand</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td data-label="Barcode">@item.ProductTBL.Barcode</td>
+                            <td data-label="Quantity">@item.Quantity</td>
+                            <td data-label="Price">$@item.Price</td>
+                            <td data-label="Shipping">$@(item.Quantity* item.ShippingCost)</td>
+                            <td data-label="Subtotal">$@(item.Quantity* item.Price + item.Quantity * item.ShippingCost)</td>
+                            <td data-label="Status">@item.ShippingStatusTBL?.Name</td>
+                            @if (item.ShippingStatusTBLId == 4 )
+                            {
+                                <td data-label="Review">
+                                    <div class="review-section @(item.IsUserWroteReview ? "disabled" : "")"
+                                         data-product-id="@item.ProductTBLId"
+                                         data-order-detail-id="@item.ID"
+                                         data-has-review="@item.IsUserWroteReview.ToString().ToLower()">
+
+                                        @if (!item.IsUserWroteReview)
+                                        {
+                                            <div class="star-rating mb-1">
+                                                @for (int i = 1; i <= 5; i++)
+                                                {
+                                                    <span class="star" data-value="@i">&#9733;</span>
+                                                }
+                                            </div>
+
+                                            <input type="text" class="form-control review-subject mb-1" placeholder="Subject (required)" />
+                                            <textarea class="form-control review-comment mb-1" placeholder="Write your review (required)" rows="2"></textarea>
+
+                                            <div class="mb-2">
+                                                <label class="small">Was this review helpful?</label>
+                                                <div>
+                                                    <label class="me-2">
+                                                        <input type="radio" name="isHelpful_@item.ID" class="is-helpful" value="true" /> Yes
+                                                    </label>
+                                                    <label>
+                                                        <input type="radio" name="isHelpful_@item.ID" class="is-helpful" value="false" checked /> No
+                                                    </label>
+                                                </div>
+                                            </div>
+
+                                            <button type="button" class="btn btn-sm btn-success submit-review">Submit Review</button>
+                                            <span class="review-message small ms-2"></span>
+                                        }
+                                        else
+                                        {
+                                            <div class="text-success">
+                                                <i class="fas fa-check-circle"></i> You already reviewed
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <a asp-controller="User" asp-action="Orders" class="btn btn-dark rounded-pill px-4">Back to Orders</a>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Hover stars
+            $(document).on("mouseenter", ".star", function () {
+                var star = $(this);
+                var value = star.data("value");
+                var container = star.closest(".review-section");
+
+                container.find(".star").each(function () {
+                    $(this).toggleClass("hover", $(this).data("value") <= value);
+                });
+            });
+
+            $(document).on("mouseleave", ".star-rating", function () {
+                var container = $(this).closest(".review-section");
+                var selected = container.attr("data-selected") || 0;
+
+                container.find(".star").each(function () {
+                    $(this).removeClass("hover");
+                    $(this).toggleClass("active", $(this).data("value") <= selected);
+                });
+            });
+
+            // Click to select stars
+            $(document).on("click", ".star", function () {
+                var star = $(this);
+                var value = star.data("value");
+                var container = star.closest(".review-section");
+
+                container.attr("data-selected", value);
+                container.find(".star").each(function () {
+                    $(this).removeClass("hover");
+                    $(this).toggleClass("active", $(this).data("value") <= value);
+                });
+            });
+
+            // Submit review
+            $(document).on("click", ".submit-review", function () {
+                var container = $(this).closest(".review-section");
+                var button = $(this);
+                var messageSpan = container.find(".review-message");
+
+                // Clear previous message
+                messageSpan.text("").removeClass("text-danger text-success");
+
+                var productId = container.data("product-id");
+                var orderDetailId = container.data("order-detail-id");
+                var stars = parseInt(container.attr("data-selected")) || 0;
+                var subject = container.find(".review-subject").val().trim();
+                var comment = container.find(".review-comment").val().trim();
+                var isHelpful = container.find(".is-helpful:checked").val() === "true";
+
+                // Validation
+                if (stars === 0) {
+                    messageSpan.text("Please select star rating").addClass("text-danger");
+                    return;
+                }
+
+                if (stars < 1 || stars > 5) {
+                    messageSpan.text("Invalid star rating").addClass("text-danger");
+                    return;
+                }
+
+                if (subject === "") {
+                    messageSpan.text("Please enter a subject").addClass("text-danger");
+                    return;
+                }
+
+                if (comment === "") {
+                    messageSpan.text("Please enter your review").addClass("text-danger");
+                    return;
+                }
+
+                // Disable button and show loading
+                button.prop("disabled", true).text("Submitting...");
+
+                $.ajax({
+                    url: '@Url.Action("SubmitProductReview", "User")', // Change this to your actual controller name
+                    type: 'POST',
+                    data: {
+                        orderDetailId: orderDetailId,
+                        productId: productId,
+                        stars: stars,
+                        subject: subject,
+                        comment: comment,
+                        IsHelpful: isHelpful
+                    },
+                    success: function (res) {
+                        if (res.success) {
+                            messageSpan.text("✓ " + res.message).addClass("text-success");
+                            // Disable all inputs in this review section
+                            container.find("input, textarea, button, .star").prop("disabled", true);
+                            container.find(".star").css("pointer-events", "none");
+                            container.addClass("disabled");
+                            // Show success message and remove review form
+                            setTimeout(function() {
+                                container.html('<div class="text-success"><i class="fas fa-check-circle"></i> Thanks for your review!</div>');
+                            }, 2000);
+                        } else {
+                            messageSpan.text("Error: " + (res.message || "Unknown error")).addClass("text-danger");
+                            button.prop("disabled", false).text("Submit Review");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error("AJAX Error:", xhr.responseText);
+                        messageSpan.text("Error submitting review. Please try again.").addClass("text-danger");
+                        button.prop("disabled", false).text("Submit Review");
+                    }
+                });
+            });
+        });
+    </script>
+}
