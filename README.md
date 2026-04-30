@@ -71,23 +71,23 @@ Build and launch your own Amazon-style e-commerce platform in days instead of mo
 ## 📸 Preview
 
 <p align="center">
-  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots/001.jpg" width="45%" />
-  <img src="screenshots/002.png" width="45%" />
+  <img src="../../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots/001.jpg" width="45%" />
+  <img src="/Screenshots/002.jpg" width="45%" />
 </p>
 
 <p align="center">
-  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots//003.png" width="45%" />
-  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots//004.png" width="45%" />
+  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots/003.jpg" width="45%" />
+  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots/004.jpg" width="45%" />
 </p>
 
 <p align="center">
-  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots//005.png" width="45%" />
-  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots//006.png" width="45%" />
+  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots/005.jpg" width="45%" />
+  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots/006.jpg" width="45%" />
 </p>
 
 <p align="center">
-  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots//007.png" width="45%" />
-  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots//008.png" width="45%" />
+  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots/007.jpg" width="45%" />
+  <img src="../LegendShop – Full E-commerce Web App Mini Amazon/Screenshots/008.jpg" width="45%" />
 </p>
 
 📩 Contact
