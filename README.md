@@ -5,6 +5,28 @@ Modern E-Commerce Web Application (Amazon-Inspired)
 <p align="center"> <b>Scalable • User-Friendly • Ready for Deployment</b> </p> <p align="center"> <a href="https://legendshop.runasp.net/">🌐 Live Demo</a> &nbsp;•&nbsp; <a href="https://payhip.com/b/jFSh4">🛒 Purchase</a> </p>
 📌 Overview
 
+## 📸 Preview
+
+<p align="center">
+  <img src="/Screenshots/001.jpg" width="45%" />
+  <img src="/Screenshots/002.jpg" width="45%" />
+</p>
+
+<p align="center">
+  <img src="/Screenshots/003.jpg" width="45%" />
+  <img src="/Screenshots/004.jpg" width="45%" />
+</p>
+
+<p align="center">
+  <img src="/Screenshots/005.jpg" width="45%" />
+  <img src="/Screenshots/006.jpg" width="45%" />
+</p>
+
+<p align="center">
+  <img src="/Screenshots/007.jpg" width="45%" />
+  <img src="/Screenshots/008.jpg" width="45%" />
+</p>
+
 LegendShop is a complete e-commerce web application inspired by the core functionality of Amazon.
 
 It provides everything needed to launch an online store quickly, with a smooth user experience and scalable architecture.
@@ -68,27 +90,6 @@ Fully customizable based on business needs
 💡 Final Note
 Build and launch your own Amazon-style e-commerce platform in days instead of months.
 
-## 📸 Preview
-
-<p align="center">
-  <img src="/Screenshots/001.jpg" width="45%" />
-  <img src="/Screenshots/002.jpg" width="45%" />
-</p>
-
-<p align="center">
-  <img src="/Screenshots/003.jpg" width="45%" />
-  <img src="/Screenshots/004.jpg" width="45%" />
-</p>
-
-<p align="center">
-  <img src="/Screenshots/005.jpg" width="45%" />
-  <img src="/Screenshots/006.jpg" width="45%" />
-</p>
-
-<p align="center">
-  <img src="/Screenshots/007.jpg" width="45%" />
-  <img src="/Screenshots/008.jpg" width="45%" />
-</p>
 
 📩 Contact
 For customization or business inquiries, feel free to reach out.
