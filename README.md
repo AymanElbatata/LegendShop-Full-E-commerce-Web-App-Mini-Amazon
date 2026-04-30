@@ -70,3 +70,6 @@ Build and launch your own Amazon-style e-commerce platform in days instead of mo
 
 📩 Contact
 For customization or business inquiries, feel free to reach out.
+
+----------
+If you like this project, please give it a star ⭐
