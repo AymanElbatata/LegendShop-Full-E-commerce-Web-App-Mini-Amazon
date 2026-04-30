@@ -68,6 +68,28 @@ Fully customizable based on business needs
 💡 Final Note
 Build and launch your own Amazon-style e-commerce platform in days instead of months.
 
+## 📸 Preview
+
+<p align="center">
+  <img src="screenshots/001.png" width="45%" />
+  <img src="screenshots/002.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="screenshots/003.png" width="45%" />
+  <img src="screenshots/004.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="screenshots/005.png" width="45%" />
+  <img src="screenshots/006.png" width="45%" />
+</p>
+
+<p align="center">
+  <img src="screenshots/007.png" width="45%" />
+  <img src="screenshots/008.png" width="45%" />
+</p>
+
 📩 Contact
 For customization or business inquiries, feel free to reach out.
 
