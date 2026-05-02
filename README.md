@@ -2,7 +2,7 @@
 
 🛒 LegendShop
 Modern E-Commerce Web Application (Amazon-Inspired)
-<p align="center"> <b>Scalable • User-Friendly • Ready for Deployment</b> </p> <p align="center"> <a href="https://legendshop.runasp.net/">🌐 Live Demo</a> &nbsp;•&nbsp; <a href="https://payhip.com/b/jFSh4">🛒 Purchase</a> </p>
+<p align="center"> <b>Scalable • User-Friendly • Ready for Deployment</b> </p> <p align="center"> <a  target="_blank" href="https://legendshop.runasp.net/">🌐 Live Demo</a> &nbsp;•&nbsp; <a  target="_blank" href="https://payhip.com/b/jFSh4">🛒 Purchase</a> </p>
 📌 Overview
 
 LegendShop is a complete e-commerce web application inspired by the core functionality of Amazon.
