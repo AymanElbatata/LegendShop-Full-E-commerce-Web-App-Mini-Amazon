@@ -1,4 +1,4 @@
-# LegendShop – Full E-commerce Web App Mini Amazon
+# LegendShop – Full E-commerce Web App Mini Amazon Web App (Source Code + Database)
 
 🛒 LegendShop
 Modern E-Commerce Web Application (Amazon-Inspired)
