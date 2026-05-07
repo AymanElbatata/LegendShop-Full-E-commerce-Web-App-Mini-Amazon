@@ -58,6 +58,7 @@
                         <tr>
                             <th class="ps-3">#</th>
                             <th>Product</th>
+                            <th>Sender</th>
                             <th>Subject</th>
                             <th>Comment</th>
                             <th>Reported Issue</th>
@@ -86,6 +87,11 @@
                                                 BC: @(item.ProductRatingTBL?.ProductTBL?.Barcode ?? "NA")
                                             </small>
                                         </div>
+                                    </div>
+                                </td>
+                                <td style="max-width: 250px;">
+                                    <div class="text-wrap text-muted">
+                                        "@(item.SenderUserTBL?.UserName ?? "User")"
                                     </div>
                                 </td>
                                 <td style="max-width: 250px;">

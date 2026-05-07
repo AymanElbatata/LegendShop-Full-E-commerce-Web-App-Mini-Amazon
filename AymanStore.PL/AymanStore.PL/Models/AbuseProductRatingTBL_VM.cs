@@ -9,6 +9,9 @@ namespace AymanStore.PL.Models
         public int? ProductRatingTBLId { get; set; }
         public virtual ProductRatingTBL? ProductRatingTBL { get; set; }
 
+        public string? SenderUserTBLId { get; set; }
+        public virtual AppUser? SenderUserTBL { get; set; }
+
         [MinLength(5, ErrorMessage = "Minimum Length 5 Charcters")]
         [MaxLength(1000, ErrorMessage = "Maximum Length 1000 Charcter.")]
         [Display(Name = "Issues")]

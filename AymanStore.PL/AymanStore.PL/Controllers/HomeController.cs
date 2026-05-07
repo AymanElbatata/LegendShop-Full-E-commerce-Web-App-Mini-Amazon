@@ -259,36 +259,6 @@ namespace AymanStore.PL.Controllers
         }
         #endregion
 
-        #region Report Abuse Product Rating
-        [HttpGet]
-        public IActionResult ReportAbuseProductRating(int productReviewId)
-        {
-            var model = new ReportAbuseProductRating_VM();
-            var productRating = unitOfWork.ProductRatingTBLRepository.GetAllCustomized(
-                            filter: a => a.IsDeleted == false && a.ID == productReviewId,
-                    includes: new Expression<Func<ProductRatingTBL, object>>[]
-                    {
-                                      p => p.ProductTBL,
-                    }).FirstOrDefault();
-            if (productRating != null)
-                model.ProductRatingTBL_VM = Mapper.Map<ProductRatingTBL_VM>(productRating);
-
-            return View(model);
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult ReportAbuseProductRating(ReportAbuseProductRating_VM model)
-        {
-            unitOfWork.AbuseProductRatingTBLRepository.Add(new AbuseProductRatingTBL
-            {
-                ProductRatingTBLId = model.ProductRatingTBL_VM.ID,
-                Message = model.AbuseProductRatingTBL_VM.Message
-            });
-            return RedirectToAction("ProductDetail", "Home", new { ProductId = model.ProductRatingTBL_VM.ProductTBLId, IncomingMessage = "Your Report has been sent successfully!" });
-        }
-        #endregion
-
         #region General ContactUs
         [HttpGet]
         public IActionResult ContactUs()

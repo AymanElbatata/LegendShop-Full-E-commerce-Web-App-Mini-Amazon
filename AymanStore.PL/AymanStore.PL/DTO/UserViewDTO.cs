@@ -41,7 +41,6 @@ namespace AymanStore.PL.Models
 
         public bool isActivated { get; set; } = false;
         public bool isDeleted { get; set; } = false;
-        public bool isOnline { get; set; } = false;
     }
 
     public class UserInputModelUpdate
